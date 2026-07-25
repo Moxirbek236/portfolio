@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://moxirbek.dev/sitemap.xml
+# Block crawling of private/API paths
+Disallow: /api/
+
+Sitemap: https://portfolio-murex-six-zi0w3lp1g3.vercel.app/sitemap.xml
+
+# Crawl-delay hint for aggressive bots
+Crawl-delay: 1

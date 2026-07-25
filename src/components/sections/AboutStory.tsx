@@ -66,7 +66,7 @@ export default function AboutStory() {
           </div>
 
           <ul className="space-y-2.5 text-xs sm:text-sm text-slate-300">
-            {PORTFOLIO_DATA.experience[0].details.map((detail, dIdx) => (
+            {(PORTFOLIO_DATA.experience[0]?.details ?? []).map((detail, dIdx) => (
               <li key={dIdx} className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <span>{detail}</span>
@@ -82,7 +82,7 @@ export default function AboutStory() {
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {PORTFOLIO_DATA.skillCapabilities.map((cat) => (
+            {(PORTFOLIO_DATA.skillCapabilities ?? []).map((cat) => (
               <div key={cat.category} className="glass-card rounded-2xl border border-slate-800 p-6 space-y-4">
                 <h4 className="text-sm font-bold text-amber-400 font-mono border-b border-slate-800 pb-2">
                   {cat.category}
