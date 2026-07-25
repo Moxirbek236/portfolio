@@ -16,7 +16,7 @@ export default function Home() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { 
     const handleCustomPalette = () => setPaletteOpen(true);
     const handleCustomTerminal = () => setTerminalOpen(true);
 
