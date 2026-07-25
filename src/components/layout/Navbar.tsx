@@ -37,23 +37,23 @@ export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarP
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
         
-        {/* Brand Name & Location */}
-        <a href="#" className="flex flex-col sm:flex-row sm:items-center gap-1.5 shrink-0 group">
-          <span className="font-bold text-base sm:text-lg text-white tracking-tight group-hover:text-indigo-400 transition-colors">
+        {/* Brand Name */}
+        <a href="#" className="flex items-center gap-2 shrink-0 group">
+          <span className="font-bold text-base sm:text-lg text-white tracking-tight group-hover:text-amber-400 transition-colors">
             {PORTFOLIO_DATA.personal.name}
           </span>
-          <span className="hidden sm:inline text-xs font-mono text-slate-400 sm:border-l sm:border-slate-800 sm:pl-2.5">
-            Full-Stack Engineer • Tashkent, UZB
+          <span className="hidden xl:inline text-xs font-mono text-slate-400 border-l border-slate-800 pl-2.5">
+            Tashkent, UZB
           </span>
         </a>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation (Clean 5 items) */}
         <nav className="hidden lg:flex items-center gap-6 text-sm text-slate-300 font-medium">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="hover:text-white hover:underline underline-offset-8 decoration-indigo-500 transition-all"
+              className="hover:text-white hover:underline underline-offset-8 decoration-amber-500 transition-all"
             >
               {link.name}
             </a>
@@ -61,28 +61,28 @@ export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarP
         </nav>
 
         {/* Action Buttons: CLI (Ctrl+~), Palette (Cmd+K), PDF CV, PDF Resume */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
 
-          {/* Dedicated CLI Terminal Button (Ctrl + ~) */}
+          {/* Dedicated CLI Terminal Button */}
           <button
             onClick={onOpenTerminal}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800 hover:bg-emerald-900/80 hover:text-white transition-all cursor-pointer shadow-lg shadow-emerald-950/30"
-            title="Open Interactive CLI Terminal (Ctrl+~ or Ctrl+J)"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800 hover:bg-emerald-900/80 hover:text-white transition-all cursor-pointer shadow-md"
+            title="Open CLI Terminal (Ctrl+~ or Ctrl+J)"
           >
             <Terminal className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="font-bold font-mono text-xs">CLI Shell</span>
+            <span className="font-bold font-mono text-xs hidden sm:inline">CLI</span>
             <kbd className="hidden xl:inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-900 text-emerald-400 border border-emerald-900">
               Ctrl+~
             </kbd>
           </button>
 
-          {/* Command Palette Button (Cmd + K) */}
+          {/* Command Palette Button */}
           <button
             onClick={onOpenCommandPalette}
-            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 hover:text-white transition-all cursor-pointer"
             title="Open Command Palette (Cmd+K)"
           >
-            <Command className="w-3.5 h-3.5 text-indigo-400" />
+            <Command className="w-3.5 h-3.5 text-amber-400" />
             <span>Palette</span>
             <kbd className="hidden xl:inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">
               ⌘K
@@ -93,20 +93,10 @@ export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarP
           <a
             href="/Moxirbek-Solijonov-CV.pdf"
             download="Moxirbek-Solijonov-CV.pdf"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/20 active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-600 hover:bg-amber-500 transition-all shadow-md shadow-amber-600/20 active:scale-95"
           >
             <Download className="w-3.5 h-3.5" />
             <span>PDF CV</span>
-          </a>
-
-          {/* PDF Resume Download Button */}
-          <a
-            href="/Moxirbek-Solijonov-CV.pdf"
-            download="Moxirbek-Solijonov-Resume.pdf"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-indigo-300 bg-indigo-950/80 border border-indigo-800 hover:bg-indigo-900 hover:text-white transition-all shadow-md active:scale-95"
-          >
-            <FileText className="w-3.5 h-3.5 text-indigo-400" />
-            <span>PDF Resume</span>
           </a>
 
           {/* Mobile Menu Button */}

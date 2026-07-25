@@ -1,22 +1,44 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sparkles, ZoomIn, RotateCcw } from "lucide-react";
 
 export default function DeveloperRoom3D() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const mountRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // IntersectionObserver to lazy load WebGL scene only when scrolled into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
+    if (!isVisible) return;
     const container = mountRef.current;
     if (!container) return;
 
     const width = container.clientWidth;
     const height = container.clientHeight;
 
-    // 1. Load Real High-Definition Screenshots via TextureLoader
+    // Load High-Definition Screenshots via TextureLoader
     const textureLoader = new THREE.TextureLoader();
 
     const cs16Texture = textureLoader.load("/cs16-screen.png", (tex) => {
@@ -31,7 +53,7 @@ export default function DeveloperRoom3D() {
       tex.magFilter = THREE.LinearFilter;
     });
 
-    // 2. Three.js Scene Setup
+    // 1. Three.js Scene Setup
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x060911);
 
@@ -45,7 +67,7 @@ export default function DeveloperRoom3D() {
     renderer.shadowMap.type = THREE.PCFShadowMap;
     container.appendChild(renderer.domElement);
 
-    // 3. OrbitControls (360 Drag Rotate, Scroll Zoom, Pan)
+    // 2. OrbitControls (360 Drag Rotate, Scroll Zoom, Pan)
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
@@ -60,7 +82,7 @@ export default function DeveloperRoom3D() {
     controls.target.set(0, 2.2, 0);
     controlsRef.current = controls;
 
-    // 4. Lighting
+    // 3. Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
@@ -77,7 +99,7 @@ export default function DeveloperRoom3D() {
     amberPointLight.position.set(1, 4, -2);
     scene.add(amberPointLight);
 
-    // 5. Room Floor & Walls
+    // 4. Room Floor & Walls
     const floorGeo = new THREE.BoxGeometry(14, 0.4, 14);
     const floorMat = new THREE.MeshStandardMaterial({ color: 0x0e1322, roughness: 0.4 });
     const floor = new THREE.Mesh(floorGeo, floorMat);
@@ -94,7 +116,7 @@ export default function DeveloperRoom3D() {
     leftWall.position.set(-6.8, 3.8, 0);
     scene.add(leftWall);
 
-    // 6. Desk & Chair
+    // 5. Desk & Chair
     const deskMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3 });
     const desk = new THREE.Mesh(new THREE.BoxGeometry(7.5, 0.3, 3.8), deskMat);
     desk.position.set(-0.5, 2.5, -3);
@@ -124,7 +146,7 @@ export default function DeveloperRoom3D() {
     chairBack.position.set(-0.5, 2.5, 0.3);
     scene.add(chairBack);
 
-    // 7. Sofa & Houseplant
+    // 6. Sofa & Houseplant
     const sofaMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.6 });
     const sofaBase = new THREE.Mesh(new THREE.BoxGeometry(5, 1, 2.2), sofaMat);
     sofaBase.position.set(3.5, 0.5, 2.5);
@@ -144,7 +166,7 @@ export default function DeveloperRoom3D() {
     leaves.position.set(-5, 1.8, 4.5);
     scene.add(leaves);
 
-    // 8. 3D HP Victus Laptop with Realistic Kali Linux Screen Texture
+    // 7. 3D HP Victus Laptop with Realistic Kali Linux Screen Texture
     const laptopBase = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.1, 1.4), new THREE.MeshStandardMaterial({ color: 0x0f172a }));
     laptopBase.position.set(-2.6, 2.7, -3);
     scene.add(laptopBase);
@@ -156,7 +178,7 @@ export default function DeveloperRoom3D() {
     laptopScreenMesh.rotation.x = -0.15;
     scene.add(laptopScreenMesh);
 
-    // 9. 3D Retro 2000s CRT Monitor with Realistic Counter-Strike 1.6 Screen Texture
+    // 8. 3D Retro 2000s CRT Monitor with Realistic Counter-Strike 1.6 Screen Texture
     const crtHousing = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2, 2), new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 }));
     crtHousing.position.set(1, 3.6, -3.2);
     scene.add(crtHousing);
@@ -194,7 +216,7 @@ export default function DeveloperRoom3D() {
       }
       renderer.dispose();
     };
-  }, []);
+  }, [isVisible]);
 
   const handleResetView = () => {
     if (controlsRef.current) {
@@ -203,7 +225,7 @@ export default function DeveloperRoom3D() {
   };
 
   return (
-    <section id="my-room" className="py-24 border-t border-slate-800/60 bg-[#060911] relative overflow-hidden">
+    <section ref={containerRef} id="my-room" className="py-24 border-t border-slate-800/60 bg-[#060911] relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 relative z-10">
 
         {/* Section Header */}

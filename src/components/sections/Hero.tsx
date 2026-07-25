@@ -1,99 +1,88 @@
 "use client";
 
 import { PORTFOLIO_DATA } from "@/lib/data/portfolioData";
-import { ArrowRight, Download, BookOpen } from "lucide-react";
-import { GithubIcon } from "@/components/ui/SocialIcons";
-import { motion } from "framer-motion";
+import { ArrowDown, Command, Download, Terminal, Sparkles } from "lucide-react";
+import { GithubIcon, TelegramIcon } from "@/components/ui/SocialIcons";
 
 interface HeroProps {
   onOpenCommandPalette: () => void;
 }
 
 export default function Hero({ onOpenCommandPalette }: HeroProps) {
-  const techPills = ["TypeScript", "NestJS", "Next.js", "PostgreSQL", "Redis", "WebRTC", "Docker"];
-
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-grid-pattern">
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none" />
+    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#080c14]">
+      {/* Glow Effects */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center sm:text-left">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-6"
-        >
-          {/* Availability Line */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-slate-900/90 border border-slate-800 text-slate-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>{PORTFOLIO_DATA.personal.availability}</span>
-          </div>
+      <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
 
-          {/* Name & Role Title */}
-          <div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white">
-              {PORTFOLIO_DATA.personal.name}
-            </h1>
-            <p className="text-xl sm:text-2xl font-semibold text-indigo-400 mt-2">
-              {PORTFOLIO_DATA.personal.role}
-            </p>
-          </div>
+        {/* Live Status Bar */}
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-xs font-mono bg-slate-900/90 border border-slate-800 shadow-xl">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+          <span className="text-slate-300">{PORTFOLIO_DATA.personal.nowStatus}</span>
+        </div>
 
-          {/* Authentic One-Liner */}
-          <p className="text-lg sm:text-xl lg:text-2xl text-slate-200 font-medium leading-relaxed max-w-3xl">
-            {PORTFOLIO_DATA.personal.headline}
+        {/* Headline */}
+        <div className="space-y-4">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
+            I build <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-cyan-400">multi-tenant SaaS</span>, WebRTC voice systems, & Telegram automation.
+          </h1>
+          <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-300 leading-relaxed">
+            {PORTFOLIO_DATA.personal.storyBio}
           </p>
+        </div>
 
-          {/* Tech Stack Pills */}
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-2">
-            {techPills.map((tech) => (
-              <span
-                key={tech}
-                className="px-2.5 py-1 rounded text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+        {/* Primary Action Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <a
+            href="#work"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
+          >
+            <span>Explore Products & Systems</span>
+            <ArrowDown className="w-4 h-4" />
+          </a>
 
-          {/* Action CTAs */}
-          <div className="pt-4 flex flex-wrap items-center justify-center sm:justify-start gap-4">
-            <a
-              href="#work"
-              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-600/25 active:scale-95"
-            >
-              <span>View Work</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
+          <a
+            href="/Moxirbek-Solijonov-CV.pdf"
+            download="Moxirbek-Solijonov-CV.pdf"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-slate-200 bg-slate-900 border border-slate-800 hover:border-amber-500/50 hover:text-white transition-all shadow-lg active:scale-95"
+          >
+            <Download className="w-4 h-4 text-amber-400" />
+            <span>Download PDF CV</span>
+          </a>
 
-            <a
-              href="/Moxirbek-Solijonov-CV.pdf"
-              download="Moxirbek-Solijonov-CV.pdf"
-              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl font-semibold text-sm text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-800 transition-all"
-            >
-              <Download className="w-4 h-4 text-slate-400" />
-              <span>Download PDF CV</span>
-            </a>
+          <button
+            onClick={onOpenCommandPalette}
+            className="inline-flex items-center gap-2 px-4 py-3 rounded-xl font-mono text-xs text-slate-400 bg-slate-900/80 border border-slate-800 hover:border-slate-700 hover:text-slate-200 transition-all"
+          >
+            <Command className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Palette (⌘K)</span>
+          </button>
+        </div>
 
-            <a
-              href="#deep-dives"
-              className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl font-medium text-sm text-slate-300 bg-slate-900/60 hover:bg-slate-900 border border-slate-800 transition-all"
-            >
-              <BookOpen className="w-4 h-4 text-indigo-400" />
-              <span>Read Deep Dives</span>
-            </a>
+        {/* Verified Links Strip */}
+        <div className="flex items-center justify-center gap-6 pt-6 border-t border-slate-800/80 text-slate-400 font-mono text-xs">
+          <a
+            href={PORTFOLIO_DATA.personal.github}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 hover:text-amber-400 transition-colors"
+          >
+            <GithubIcon className="w-4 h-4" />
+            <span>github.com/Moxirbek236</span>
+          </a>
 
-            <a
-              href={PORTFOLIO_DATA.personal.github}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl font-medium text-sm text-slate-400 hover:text-white bg-slate-900/40 hover:bg-slate-900 border border-slate-800 transition-all"
-            >
-              <GithubIcon className="w-4 h-4" />
-              <span className="hidden sm:inline">GitHub</span>
-            </a>
-          </div>
-        </motion.div>
+          <a
+            href={PORTFOLIO_DATA.personal.telegram}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 hover:text-cyan-400 transition-colors"
+          >
+            <TelegramIcon className="w-4 h-4" />
+            <span>{PORTFOLIO_DATA.personal.telegramHandle}</span>
+          </a>
+        </div>
+
       </div>
     </section>
   );

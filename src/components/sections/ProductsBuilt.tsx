@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { PORTFOLIO_DATA, Product } from "@/lib/data/portfolioData";
-import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow, Lock, Image as ImageIcon } from "lucide-react";
+import { PORTFOLIO_DATA } from "@/lib/data/portfolioData";
+import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow, Image as ImageIcon } from "lucide-react";
 import { GithubIcon } from "@/components/ui/SocialIcons";
 import {
   EducoinArchitectureSVG,
@@ -21,8 +21,6 @@ export default function ProductsBuilt() {
     "mk-academy": "preview",
     "instagram-bot": "preview"
   });
-
-  const [tooltipId, setTooltipId] = useState<string | null>(null);
 
   const getArchitectureSVG = (id: string) => {
     switch (id) {
@@ -84,7 +82,7 @@ export default function ProductsBuilt() {
                   </p>
                 </div>
 
-                {/* Verified GitHub Link & Private Codebase Tooltip */}
+                {/* Verified GitHub Link */}
                 <div className="relative flex items-center gap-3">
                   <a
                     href="https://github.com/Moxirbek236"
@@ -157,12 +155,14 @@ export default function ProductsBuilt() {
 
                 {/* Dynamic Tab Body */}
                 {activeTabs[product.id] === "preview" ? (
-                  <div className="rounded-2xl overflow-hidden border border-slate-800 bg-[#060911] shadow-2xl relative group">
+                  <div className="rounded-2xl overflow-hidden border border-slate-800 bg-[#060911] shadow-2xl relative group min-h-[220px]">
                     <Image
                       src={product.imageUrl}
                       alt={product.title}
-                      width={1024}
-                      height={576}
+                      width={800}
+                      height={450}
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, 800px"
                       className="w-full h-auto object-cover rounded-2xl group-hover:scale-[1.01] transition-transform duration-300"
                     />
                   </div>

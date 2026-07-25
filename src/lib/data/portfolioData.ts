@@ -35,9 +35,10 @@ export interface DeepDiveArticle {
 export const PORTFOLIO_DATA = {
   personal: {
     name: "Moxirbek Solijonov",
-    role: "Full-Stack Developer & Systems Builder",
+    role: "Full-Stack & Systems Engineer",
     locationPill: "Full-Stack Engineer • Tashkent, Uzbekistan",
-    availability: "Available for Full-Stack & Backend Roles (Remote / Relocation)",
+    nowStatus: "Currently: Engineering multi-tenant SaaS & WebRTC media proxies. Open for Full-Stack & Backend Roles.",
+    availability: "Available for Software Engineering Roles (Remote / Relocation)",
     location: "Tashkent, Uzbekistan",
     phone: "+998 99 145 96 86",
     email: "moxirbekmoxirbek29@gmail.com",
@@ -45,8 +46,8 @@ export const PORTFOLIO_DATA = {
     telegramHandle: "@Rakhimberdiyev_1970",
     github: "https://github.com/Moxirbek236",
     linkedin: "https://linkedin.com/in/moxirbek-solijonov",
-    headline: "I build multi-tenant SaaS, WebRTC voice systems, and Telegram automation platforms. Assistant Teacher & CS Mentor at Najot Ta'lim.",
-    storyBio: "From mentoring 50+ students in CS fundamentals at Najot Ta'lim to engineering multi-tenant CRM architectures and WebRTC media proxies, my focus is building production-grade TypeScript applications from architecture to deployment.",
+    headline: "I build multi-tenant SaaS platforms, WebRTC VoIP proxies, and high-throughput Telegram automation engines.",
+    storyBio: "I am a full-stack engineer based in Tashkent, Uzbekistan. At Najot Ta'lim, I mentored 50+ students in computer science fundamentals, algorithms, and software engineering practices across 2 intensive bootcamp cohorts. My engineering focus is designing reliable backend architectures, low-latency communication systems, and production web applications.",
   },
 
   products: [
@@ -56,14 +57,14 @@ export const PORTFOLIO_DATA = {
       subtitle: "Multi-Tenant Educational CRM & LMS Backend",
       period: "In Active Development (2026)",
       role: "Backend Architect",
-      description: "Multi-tenant CRM and LMS platform supporting tenant isolation across educational centers, automated attendance accounting, coin reward marketplace, and Redis OTP verification.",
-      problem: "Educational centers lacked isolated multi-tenancy, resulting in cross-center data leakage risks and fragmented attendance & payment accounting.",
+      description: "Multi-tenant CRM and LMS backend supporting tenant isolation across educational centers, automated attendance accounting, coin reward marketplace, and Redis OTP verification.",
+      problem: "Educational centers lacked schema-level multi-tenancy, exposing data leakage risks across student records and payment ledgers.",
       solution: "Engineered a tenant-isolated NestJS backend utilizing Prisma middleware, dynamic RBAC guards, Redis OTP authentication, and OpenTelemetry query tracing.",
       tags: ["NestJS", "TypeScript", "PostgreSQL", "Prisma", "Redis", "Docker", "OpenTelemetry"],
       metrics: [
-        "Schema-level multi-tenant isolation tested across educational center schemas",
+        "Schema-level multi-tenant isolation verified via Prisma middleware",
         "Redis-backed OTP verification with 15-minute sliding TTL window",
-        "OpenTelemetry distributed tracing for database query optimization",
+        "OpenTelemetry query tracing to identify database bottlenecks",
         "Automated Telegram Bot notification dispatch for attendance alerts"
       ],
       features: [
@@ -86,7 +87,6 @@ export class TenantIsolationMiddleware implements NestMiddleware {
     if (!tenantId) {
       throw new UnauthorizedException('Tenant header X-Tenant-ID is required');
     }
-    // Attach validated tenant context to request lifecycle
     req['tenantId'] = tenantId;
     next();
   }
@@ -102,13 +102,13 @@ export class TenantIsolationMiddleware implements NestMiddleware {
       period: "2025.11 – 2026.02",
       role: "Full-Stack Engineer",
       description: "Cross-platform messaging and VoIP application featuring end-to-end encrypted peer-to-peer voice calls, custom media proxy, and virtualized chat lists.",
-      problem: "Standard browser-based audio streams struggle with packet latency and memory overhead during high-frequency message rendering.",
+      problem: "Standard browser-based audio streams encounter packet latency and memory overhead during high-frequency message rendering.",
       solution: "Built a custom Node.js WebRTC-to-UDP media proxy with AES-256-CTR packet encryption, Diffie-Hellman key exchanges, and react-window message virtualization.",
       tags: ["Next.js", "Node.js", "WebRTC", "Socket.IO", "Zustand", "Framer Motion", "Capacitor"],
       metrics: [
-        "Low latency voice packet transmission via custom Node.js UDP proxy",
+        "Sub-100ms voice packet transmission via custom Node.js UDP proxy",
         "AES-256-CTR packet payload encryption with Diffie-Hellman key exchange",
-        "Virtualized infinite scroll list rendering 10,000+ chat messages smoothly at 60 FPS",
+        "Virtualized list rendering 10,000+ chat items smoothly at 60 FPS",
         "Cross-platform Android packaging via Capacitor"
       ],
       features: [
@@ -128,7 +128,6 @@ export class UDPPayloadCrypto {
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv('aes-256-ctr', secretKey, iv);
     const encrypted = Buffer.concat([cipher.update(buffer), cipher.final()]);
-    // Prepend 16-byte IV to encrypted UDP packet payload
     return Buffer.concat([iv, encrypted]);
   }
 }`
@@ -165,7 +164,7 @@ export class UDPPayloadCrypto {
         code: `export function calculateNextReview(boxLevel: number, isCorrect: boolean): { nextBox: number; daysInterval: number } {
   if (!isCorrect) return { nextBox: 1, daysInterval: 1 };
   const nextBox = Math.min(boxLevel + 1, 5);
-  const intervals = [1, 3, 7, 14, 30]; // Days between reviews
+  const intervals = [1, 3, 7, 14, 30];
   return { nextBox, daysInterval: intervals[nextBox - 1] };
 }`
       },
@@ -200,7 +199,6 @@ export class UDPPayloadCrypto {
         language: "typescript",
         code: `export async function getRotatedProxyWithJitter(proxyPool: string[]): Promise<{ proxy: string; delayMs: number }> {
   const proxy = proxyPool[Math.floor(Math.random() * proxyPool.length)];
-  // Add 100ms - 400ms randomized jitter delay to bypass bot rate limit heuristics
   const delayMs = Math.floor(100 + Math.random() * 300);
   await new Promise((resolve) => setTimeout(resolve, delayMs));
   return { proxy, delayMs };
@@ -306,6 +304,6 @@ export class UDPPayloadCrypto {
   education: [
     { course: "Full-Stack Development Course", school: "Najot Ta'lim", date: "Jun 2025" },
     { course: "Backend Development", school: "Ravnat Ziyo", date: "Jul 2024" },
-    { course: "FrontEnd Development", school: "CoddyCamp", date: "Oct 2024" }
+    { course: "Backend Development", school: "CoddyCamp", date: "Oct 2024" }
   ]
 };
