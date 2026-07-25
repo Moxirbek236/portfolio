@@ -11,7 +11,6 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 import CommandPalette from "@/components/layout/CommandPalette";
 import TerminalModal from "@/components/layout/TerminalModal";
-import AangCursorFollower from "@/components/ui/AangCursorFollower";
 
 export default function Home() {
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -32,9 +31,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#080C14] text-slate-100 flex flex-col selection:bg-indigo-600 selection:text-white relative">
-      {/* 2D Anime Running Aang Companion & Custom Glowing Cursor */}
-      <AangCursorFollower />
-
       {/* Sticky Blur Header Navbar */}
       <Navbar
         onOpenCommandPalette={() => setPaletteOpen(true)}
@@ -42,7 +38,7 @@ export default function Home() {
       />
 
       {/* Main Content Sections */}
-      <main className="flex-grow">
+      <main className="flex-grow relative z-10">
         <Hero onOpenCommandPalette={() => setPaletteOpen(true)} />
         <ProductsBuilt />
         <DeepDives />

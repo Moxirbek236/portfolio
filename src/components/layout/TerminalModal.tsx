@@ -37,20 +37,32 @@ export default function TerminalModal({ isOpen, onClose }: TerminalModalProps) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "t") {
+      const isCtrlOrCmd = e.metaKey || e.ctrlKey;
+      const key = e.key.toLowerCase();
+
+      // Intercept Ctrl+~ (backtick/tilde), Ctrl+J, or Ctrl+T with strict preventDefault
+      if (
+        (isCtrlOrCmd && (key === "`" || key === "~" || key === "j" || key === "t")) ||
+        (isCtrlOrCmd && e.shiftKey && key === "t")
+      ) {
         e.preventDefault();
-        if (isOpen) onClose();
-        else {
+        e.stopPropagation();
+
+        if (isOpen) {
+          onClose();
+        } else {
           const event = new CustomEvent("open-terminal");
           window.dispatchEvent(event);
         }
       }
+
       if (e.key === "Escape" && isOpen) {
         onClose();
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    window.addEventListener("keydown", handleKeyDown, true);
+    return () => window.removeEventListener("keydown", handleKeyDown, true);
   }, [isOpen, onClose]);
 
   useEffect(() => {
@@ -95,7 +107,7 @@ export default function TerminalModal({ isOpen, onClose }: TerminalModalProps) {
             </div>
             <div className="flex items-center gap-2 ml-3 font-mono text-xs text-slate-400">
               <TerminalIcon className="w-3.5 h-3.5 text-emerald-400" />
-              <span>moxirbek@sys-node:~ (CLI Shell - Ctrl+T)</span>
+              <span>moxirbek@sys-node:~ (CLI Shell - Ctrl+~)</span>
             </div>
           </div>
 

@@ -107,7 +107,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     },
     {
       id: "action-telegram",
-      title: "Open Telegram (@solijonov_m)",
+      title: "Open Telegram (@Rakhimberdiyev_1970)",
       category: "Links",
       icon: ExternalLink,
       run: () => {
