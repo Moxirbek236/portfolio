@@ -10,12 +10,13 @@ export interface Product {
   tags: string[];
   metrics: string[];
   features: string[];
+  imageUrl: string;
   codeSnippet: {
     filename: string;
     language: string;
     code: string;
   };
-  githubUrl?: string;
+  githubUrl: string;
   isPrivate?: boolean;
   liveUrl?: string;
 }
@@ -34,18 +35,18 @@ export interface DeepDiveArticle {
 export const PORTFOLIO_DATA = {
   personal: {
     name: "Moxirbek Solijonov",
-    role: "Full-Stack & Systems Engineer",
+    role: "Full-Stack Developer & Systems Builder",
     locationPill: "Full-Stack Engineer • Tashkent, Uzbekistan",
-    availability: "Available for Senior/Mid Full-Stack & Backend Roles (Remote / Relocation)",
+    availability: "Available for Full-Stack & Backend Roles (Remote / Relocation)",
     location: "Tashkent, Uzbekistan",
     phone: "+998 99 145 96 86",
     email: "moxirbekmoxirbek29@gmail.com",
     telegram: "https://t.me/Rakhimberdiyev_1970",
     telegramHandle: "@Rakhimberdiyev_1970",
     github: "https://github.com/Moxirbek236",
-    linkedin: "https://linkedin.com/in/moxirbek",
-    headline: "I build multi-tenant SaaS, WebRTC voice systems, and Telegram automation platforms. Currently teaching CS at Najot Ta'lim.",
-    storyBio: "From teaching programming fundamentals at Najot Ta'lim to building multi-tenant educational platforms, real-time communication systems, and automation products, my focus is turning complex ideas into reliable software.",
+    linkedin: "https://linkedin.com/in/moxirbek-solijonov",
+    headline: "I build multi-tenant SaaS, WebRTC voice systems, and Telegram automation platforms. Assistant Teacher & CS Mentor at Najot Ta'lim.",
+    storyBio: "From mentoring 50+ students in CS fundamentals at Najot Ta'lim to engineering multi-tenant CRM architectures and WebRTC media proxies, my focus is building production-grade TypeScript applications from architecture to deployment.",
   },
 
   products: [
@@ -53,14 +54,14 @@ export const PORTFOLIO_DATA = {
       id: "educoin",
       title: "Educoin",
       subtitle: "Multi-Tenant Educational CRM & LMS Backend",
-      period: "2026.04 – Present",
+      period: "In Active Development (2026)",
       role: "Backend Architect",
       description: "Multi-tenant CRM and LMS platform supporting tenant isolation across educational centers, automated attendance accounting, coin reward marketplace, and Redis OTP verification.",
       problem: "Educational centers lacked isolated multi-tenancy, resulting in cross-center data leakage risks and fragmented attendance & payment accounting.",
       solution: "Engineered a tenant-isolated NestJS backend utilizing Prisma middleware, dynamic RBAC guards, Redis OTP authentication, and OpenTelemetry query tracing.",
       tags: ["NestJS", "TypeScript", "PostgreSQL", "Prisma", "Redis", "Docker", "OpenTelemetry"],
       metrics: [
-        "Schema-level multi-tenant isolation across educational centers",
+        "Schema-level multi-tenant isolation tested across educational center schemas",
         "Redis-backed OTP verification with 15-minute sliding TTL window",
         "OpenTelemetry distributed tracing for database query optimization",
         "Automated Telegram Bot notification dispatch for attendance alerts"
@@ -71,6 +72,7 @@ export const PORTFOLIO_DATA = {
         "Gamified student rewards system with coin economy & marketplace",
         "Docker containerization with GitLab CI/CD automated deployment pipeline"
       ],
+      imageUrl: "/educoin-ui.png",
       codeSnippet: {
         filename: "src/common/middleware/tenant-isolation.middleware.ts",
         language: "typescript",
@@ -91,22 +93,22 @@ export class TenantIsolationMiddleware implements NestMiddleware {
 }`
       },
       isPrivate: true,
-      githubUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236"
     },
     {
       id: "ross-messenger",
       title: "Ross Messenger",
       subtitle: "Telegram-Inspired WebRTC Voice & Messaging Engine",
       period: "2025.11 – 2026.02",
-      role: "Full-Stack Engineer & Telecom DevOps",
+      role: "Full-Stack Engineer",
       description: "Cross-platform messaging and VoIP application featuring end-to-end encrypted peer-to-peer voice calls, custom media proxy, and virtualized chat lists.",
-      problem: "Standard browser-based audio streams struggle with packet latency and memory consumption during high-frequency message rendering.",
+      problem: "Standard browser-based audio streams struggle with packet latency and memory overhead during high-frequency message rendering.",
       solution: "Built a custom Node.js WebRTC-to-UDP media proxy with AES-256-CTR packet encryption, Diffie-Hellman key exchanges, and react-window message virtualization.",
       tags: ["Next.js", "Node.js", "WebRTC", "Socket.IO", "Zustand", "Framer Motion", "Capacitor"],
       metrics: [
-        "Sub-100ms voice packet latency via custom UDP proxy",
+        "Low latency voice packet transmission via custom Node.js UDP proxy",
         "AES-256-CTR packet payload encryption with Diffie-Hellman key exchange",
-        "Virtualized infinite scroll list rendering 10,000+ messages at 60 FPS",
+        "Virtualized infinite scroll list rendering 10,000+ chat messages smoothly at 60 FPS",
         "Cross-platform Android packaging via Capacitor"
       ],
       features: [
@@ -115,6 +117,7 @@ export class TenantIsolationMiddleware implements NestMiddleware {
         "react-window list virtualization preventing memory leaks during infinite scroll",
         "Zustand state store synchronizing WebSockets and active WebRTC calls"
       ],
+      imageUrl: "/ross-ui.png",
       codeSnippet: {
         filename: "server/webrtc-proxy/udp-crypto.service.ts",
         language: "typescript",
@@ -131,7 +134,7 @@ export class UDPPayloadCrypto {
 }`
       },
       isPrivate: true,
-      githubUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236"
     },
     {
       id: "mk-academy",
@@ -155,6 +158,7 @@ export class UDPPayloadCrypto {
         "Gamified XP, streaks, levels, and unlockable achievement badges",
         "Capacitor mobile pipeline generating production native Android packages"
       ],
+      imageUrl: "/mk-ui.png",
       codeSnippet: {
         filename: "src/lib/spaced-repetition/leitner.engine.ts",
         language: "typescript",
@@ -166,7 +170,7 @@ export class UDPPayloadCrypto {
 }`
       },
       isPrivate: true,
-      githubUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236"
     },
     {
       id: "instagram-bot",
@@ -190,6 +194,7 @@ export class UDPPayloadCrypto {
         "Direct memory stream piping from CDN source to Telegram API",
         "Automatic audio extraction fallback when video downloads are restricted"
       ],
+      imageUrl: "/instabot-ui.png",
       codeSnippet: {
         filename: "src/queue/proxy-jitter.queue.ts",
         language: "typescript",
@@ -202,15 +207,15 @@ export class UDPPayloadCrypto {
 }`
       },
       isPrivate: true,
-      githubUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236"
     }
   ] as Product[],
 
   deepDives: [
     {
       id: "webrtc-udp-proxy-note",
-      title: "Building a Sub-100ms WebRTC UDP Media Proxy with AES-256 Encryption in Node.js",
-      subtitle: "How I engineered low-latency peer-to-peer voice transmission for Ross Messenger.",
+      title: "Building a Low-Latency WebRTC UDP Media Proxy with AES-256 Encryption in Node.js",
+      subtitle: "How I engineered peer-to-peer voice transmission for Ross Messenger.",
       date: "Feb 2026",
       readTime: "5 min read",
       tags: ["WebRTC", "Node.js", "UDP", "AES-256", "Telecom"],
@@ -219,7 +224,7 @@ export class UDPPayloadCrypto {
         "1. The Challenge: STUN/TURN servers add unacceptable latency for voice calls in Central Asia due to remote relay locations.",
         "2. The Solution: A lightweight Node.js UDP socket proxy that performs Diffie-Hellman key exchange during call setup.",
         "3. Encryption Pipeline: Every incoming audio packet buffer is encrypted using AES-256-CTR with a 16-byte initialization vector prepended to the UDP datagram.",
-        "4. Outcome: Achieved stable sub-100ms voice packet transmission while preserving end-to-end privacy."
+        "4. Outcome: Achieved stable low-latency voice packet transmission while preserving end-to-end privacy."
       ]
     },
     {
@@ -287,11 +292,11 @@ export class UDPPayloadCrypto {
   experience: [
     {
       company: "Najot Ta'lim",
-      role: "Assistant Teacher (Bootcamp Foundation)",
+      role: "Assistant Teacher & CS Mentor (Bootcamp Foundation)",
       period: "Feb 2026 – Apr 2026 (2 mos)",
       location: "Tashkent, Uzbekistan",
       details: [
-        "Mentored 50+ students in computer science fundamentals, algorithms, data structures, C, and Python.",
+        "Mentored 50+ students in computer science fundamentals, algorithms, data structures, C, and Python across 2 foundation cohorts.",
         "Conducted daily code review sessions, live debugging workshops, and software engineering practice tests.",
         "Guided student projects through Git workflows, clean code principles, and problem-solving methodologies."
       ]
@@ -301,6 +306,6 @@ export class UDPPayloadCrypto {
   education: [
     { course: "Full-Stack Development Course", school: "Najot Ta'lim", date: "Jun 2025" },
     { course: "Backend Development", school: "Ravnat Ziyo", date: "Jul 2024" },
-    { course: "Backend Development", school: "CoddyCamp", date: "Oct 2024" }
+    { course: "FrontEnd Development", school: "CoddyCamp", date: "Oct 2024" }
   ]
 };

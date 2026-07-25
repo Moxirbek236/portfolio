@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { PORTFOLIO_DATA, Product } from "@/lib/data/portfolioData";
-import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow, Lock, ExternalLink } from "lucide-react";
+import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow, Lock, Image as ImageIcon } from "lucide-react";
 import { GithubIcon } from "@/components/ui/SocialIcons";
 import {
   EducoinArchitectureSVG,
@@ -14,11 +15,11 @@ import CodeSnippetViewer from "@/components/ui/CodeSnippetViewer";
 import { motion } from "framer-motion";
 
 export default function ProductsBuilt() {
-  const [activeTabs, setActiveTabs] = useState<Record<string, "architecture" | "code">>({
-    educoin: "architecture",
-    "ross-messenger": "architecture",
-    "mk-academy": "architecture",
-    "instagram-bot": "architecture"
+  const [activeTabs, setActiveTabs] = useState<Record<string, "preview" | "architecture" | "code">>({
+    educoin: "preview",
+    "ross-messenger": "preview",
+    "mk-academy": "preview",
+    "instagram-bot": "preview"
   });
 
   const [tooltipId, setTooltipId] = useState<string | null>(null);
@@ -46,13 +47,13 @@ export default function ProductsBuilt() {
         <div className="space-y-4 max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20">
             <Layers className="w-3.5 h-3.5" />
-            <span>FEATURED WORK</span>
+            <span>FEATURED WORK & SYSTEMS</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Production Products & Systems
+            Production Products & Architecture
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
-            Architectural breakdowns, topology flows, and real code snippets from software products I've engineered.
+            Visual UI previews, topology flow diagrams, and real code snippets from software products I've engineered.
           </p>
         </div>
 
@@ -83,56 +84,43 @@ export default function ProductsBuilt() {
                   </p>
                 </div>
 
-                {/* Repository Button with Private Tooltip */}
+                {/* Verified GitHub Link & Private Codebase Tooltip */}
                 <div className="relative flex items-center gap-3">
-                  {product.isPrivate ? (
-                    <div
-                      onMouseEnter={() => setTooltipId(product.id)}
-                      onMouseLeave={() => setTooltipId(null)}
-                      className="relative"
-                    >
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setTooltipId(product.id);
-                        }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 bg-slate-900 border border-slate-800 cursor-not-allowed opacity-90 transition-all"
-                      >
-                        <Lock className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Private Codebase</span>
-                      </button>
-
-                      {/* Hover Tooltip */}
-                      {tooltipId === product.id && (
-                        <div className="absolute right-0 bottom-full mb-2 w-56 p-2.5 rounded-xl bg-slate-950 border border-amber-500/40 shadow-2xl text-[11px] font-mono text-amber-300 z-30 pointer-events-none">
-                          🔒 This is a private commercial repository. Code snippets are displayed below.
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <a
-                      href={product.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-all"
-                    >
-                      <GithubIcon className="w-3.5 h-3.5" />
-                      <span>Public Repository</span>
-                    </a>
-                  )}
+                  <a
+                    href="https://github.com/Moxirbek236"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all shadow-sm"
+                  >
+                    <GithubIcon className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>GitHub Profile / Repos</span>
+                    <ArrowUpRight className="w-3 h-3 text-slate-400" />
+                  </a>
                 </div>
               </div>
 
-              {/* Narrative Summary */}
+              {/* Narrative Context */}
               <div className="space-y-2 text-sm text-slate-300 leading-relaxed">
-                <p><strong className="text-white">Context:</strong> {product.problem}</p>
-                <p><strong className="text-white">Engineering Yechim:</strong> {product.solution}</p>
+                <p><strong className="text-white">Problem:</strong> {product.problem}</p>
+                <p><strong className="text-white">Engineering Solution:</strong> {product.solution}</p>
               </div>
 
-              {/* Interactive Architecture SVG vs Code Snippet Switcher */}
+              {/* View Switcher: UI Preview / SVG Topology / Code Snippet */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                   <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setActiveTabs({ ...activeTabs, [product.id]: "preview" })}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
+                        activeTabs[product.id] === "preview"
+                          ? "bg-indigo-600 text-white font-semibold"
+                          : "text-slate-400 hover:text-white hover:bg-slate-900"
+                      }`}
+                    >
+                      <ImageIcon className="w-3.5 h-3.5" />
+                      <span>UI Screenshot Preview</span>
+                    </button>
+
                     <button
                       onClick={() => setActiveTabs({ ...activeTabs, [product.id]: "architecture" })}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
@@ -159,12 +147,26 @@ export default function ProductsBuilt() {
                   </div>
 
                   <span className="hidden sm:inline text-[10px] font-mono text-slate-500">
-                    {activeTabs[product.id] === "architecture" ? "Interactive SVG Topology" : product.codeSnippet.filename}
+                    {activeTabs[product.id] === "preview"
+                      ? "Product Visual Screenshot"
+                      : activeTabs[product.id] === "architecture"
+                      ? "Interactive Topology SVG"
+                      : product.codeSnippet.filename}
                   </span>
                 </div>
 
-                {/* Tab View */}
-                {activeTabs[product.id] === "architecture" ? (
+                {/* Dynamic Tab Body */}
+                {activeTabs[product.id] === "preview" ? (
+                  <div className="rounded-2xl overflow-hidden border border-slate-800 bg-[#060911] shadow-2xl relative group">
+                    <Image
+                      src={product.imageUrl}
+                      alt={product.title}
+                      width={1024}
+                      height={576}
+                      className="w-full h-auto object-cover rounded-2xl group-hover:scale-[1.01] transition-transform duration-300"
+                    />
+                  </div>
+                ) : activeTabs[product.id] === "architecture" ? (
                   getArchitectureSVG(product.id)
                 ) : (
                   <CodeSnippetViewer
@@ -175,7 +177,7 @@ export default function ProductsBuilt() {
                 )}
               </div>
 
-              {/* Verified Metrics & Features */}
+              {/* Verified Metrics & Technical Features */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                 <div className="space-y-3">
                   <h4 className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold">
@@ -209,7 +211,7 @@ export default function ProductsBuilt() {
                 </div>
               </div>
 
-              {/* Tech Badges Strip */}
+              {/* Tech Stack Badges */}
               <div className="pt-4 border-t border-slate-800/60 flex flex-wrap items-center gap-2">
                 <span className="text-xs font-mono text-slate-500 mr-2">Stack:</span>
                 {product.tags.map((tag) => (
