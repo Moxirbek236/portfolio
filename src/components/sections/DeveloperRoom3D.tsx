@@ -1,17 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Monitor, Laptop, Gamepad2, Terminal as TerminalIcon, Sparkles, RefreshCw, Cpu } from "lucide-react";
-import { motion } from "framer-motion";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { Laptop, Gamepad2, Sparkles, RefreshCw, ZoomIn, RotateCcw } from "lucide-react";
 
 export default function DeveloperRoom3D() {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [activeTab, setActiveTab] = useState<"all" | "victus" | "crt">("all");
-  
-  // Live Kali Linux Code Streaming state
+  const mountRef = useRef<HTMLDivElement>(null);
   const [kaliLogs, setKaliLogs] = useState<string[]>([
     "root@kali-linux:~# nmap -sV -sC 192.168.1.100",
-    "Starting Nmap 7.94 ( https://nmap.org ) at 2026-07-26 00:25 UZT",
+    "Starting Nmap 7.94 ( https://nmap.org ) at 2026-07-26 00:30 UZT",
     "Nmap scan report for dev-node-internal (192.168.1.100)",
     "Host is up (0.00042s latency).",
     "PORT     STATE SERVICE VERSION",
@@ -23,25 +21,12 @@ export default function DeveloperRoom3D() {
     "root@kali-linux:~# nest start --watch"
   ]);
 
-  // Retro Game Canvas Animation state
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [gameScore, setGameScore] = useState(1420);
+  const [gameScore, setGameScore] = useState(1840);
+  const crtCanvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Tilt effect tracking mouse over 3D room card
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20; // -10 to 10 deg
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -20; // -10 to 10 deg
-    setTilt({ x, y });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
-
-  // 2D Retro Game Animation Loop (Space Invaders on CRT Monitor)
+  // 2D Retro Game Animation Loop for CRT screen
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = crtCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -51,17 +36,17 @@ export default function DeveloperRoom3D() {
     let dx = 2;
     let bullets: { x: number; y: number }[] = [];
     let aliens = Array.from({ length: 12 }, (_, i) => ({
-      x: (i % 6) * 40 + 20,
+      x: (i % 6) * 45 + 20,
       y: Math.floor(i / 6) * 25 + 20,
       alive: true
     }));
 
-    const gameLoop = () => {
+    const loop = () => {
       ctx.fillStyle = "#050b14";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw Retro Grid lines
-      ctx.strokeStyle = "rgba(56, 189, 248, 0.1)";
+      // Draw Retro Grid
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.15)";
       ctx.lineWidth = 1;
       for (let x = 0; x < canvas.width; x += 20) {
         ctx.beginPath();
@@ -70,236 +55,301 @@ export default function DeveloperRoom3D() {
         ctx.stroke();
       }
 
-      // Move player ship
+      // Player Movement
       playerX += dx;
       if (playerX > canvas.width - 30 || playerX < 10) dx = -dx;
 
-      // Draw Pixel Player Ship (Green Retro Arcade)
+      // Player Ship
       ctx.fillStyle = "#10b981";
       ctx.fillRect(playerX, canvas.height - 25, 24, 10);
       ctx.fillRect(playerX + 8, canvas.height - 32, 8, 8);
 
-      // Random Bullet Firing
-      if (Math.random() > 0.85) {
-        bullets.push({ x: playerX + 10, y: canvas.height - 32 });
-      }
-
-      // Update & Draw Bullets
+      // Bullets
+      if (Math.random() > 0.85) bullets.push({ x: playerX + 10, y: canvas.height - 32 });
       ctx.fillStyle = "#f59e0b";
       bullets.forEach((b, index) => {
         b.y -= 4;
         ctx.fillRect(b.x, b.y, 4, 8);
-
-        // Check collision with aliens
         aliens.forEach((a) => {
           if (a.alive && Math.abs(b.x - a.x) < 15 && Math.abs(b.y - a.y) < 15) {
             a.alive = false;
             setGameScore((prev) => prev + 100);
           }
         });
-
         if (b.y < 0) bullets.splice(index, 1);
       });
 
-      // Respawn aliens if all cleared
-      if (aliens.every((a) => !a.alive)) {
-        aliens.forEach((a) => (a.alive = true));
-      }
+      if (aliens.every((a) => !a.alive)) aliens.forEach((a) => (a.alive = true));
 
-      // Draw Retro Pixel Aliens
+      // Aliens
       aliens.forEach((a) => {
         if (a.alive) {
           ctx.fillStyle = "#ec4899";
           ctx.fillRect(a.x, a.y, 18, 12);
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(a.x + 3, a.y + 3, 3, 3);
-          ctx.fillRect(a.x + 12, a.y + 3, 3, 3);
         }
       });
 
-      // CRT Scanline Overlay Effect
-      ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+      // Scanlines
+      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
       for (let y = 0; y < canvas.height; y += 4) {
         ctx.fillRect(0, y, canvas.width, 2);
       }
 
-      animId = requestAnimationFrame(gameLoop);
+      animId = requestAnimationFrame(loop);
     };
 
-    animId = requestAnimationFrame(gameLoop);
+    animId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animId);
+  }, []);
+
+  // Three.js 3D Room Scene Initialization
+  useEffect(() => {
+    const container = mountRef.current;
+    if (!container) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    // 1. Scene, Camera & Renderer
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x060911);
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(12, 10, 14);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    // 2. OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxPolarAngle = Math.PI / 2 - 0.05; // Keep above floor
+    controls.minDistance = 6;
+    controls.maxDistance = 25;
+    controls.target.set(0, 2, 0);
+
+    // 3. Ambient & Directional Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const mainLight = new THREE.DirectionalLight(0x6366f1, 1.2);
+    mainLight.position.set(10, 15, 10);
+    mainLight.castShadow = true;
+    scene.add(mainLight);
+
+    const cyanPointLight = new THREE.PointLight(0x38bdf8, 2, 15);
+    cyanPointLight.position.set(-2, 4, 0);
+    scene.add(cyanPointLight);
+
+    // 4. Room Floor & Walls
+    const floorGeo = new THREE.BoxGeometry(14, 0.4, 14);
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x0e1322, roughness: 0.4 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.position.y = -0.2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    // Back Wall
+    const backWallGeo = new THREE.BoxGeometry(14, 8, 0.4);
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0x090e1a });
+    const backWall = new THREE.Mesh(backWallGeo, wallMat);
+    backWall.position.set(0, 3.8, -6.8);
+    scene.add(backWall);
+
+    // Left Wall
+    const leftWallGeo = new THREE.BoxGeometry(0.4, 8, 14);
+    const leftWall = new THREE.Mesh(leftWallGeo, wallMat);
+    leftWall.position.set(-6.8, 3.8, 0);
+    scene.add(leftWall);
+
+    // 5. Furniture: Developer Desk & Chair
+    const deskGeo = new THREE.BoxGeometry(7, 0.3, 3.5);
+    const deskMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3 });
+    const desk = new THREE.Mesh(deskGeo, deskMat);
+    desk.position.set(-1, 2.5, -3);
+    desk.castShadow = true;
+    desk.receiveShadow = true;
+    scene.add(desk);
+
+    // Desk Legs
+    const legGeo = new THREE.CylinderGeometry(0.12, 0.12, 2.5);
+    const legMat = new THREE.MeshStandardMaterial({ color: 0x0f172a });
+    [
+      [-4.2, 1.25, -4.5],
+      [2.2, 1.25, -4.5],
+      [-4.2, 1.25, -1.5],
+      [2.2, 1.25, -1.5]
+    ].forEach(([x, y, z]) => {
+      const leg = new THREE.Mesh(legGeo, legMat);
+      leg.position.set(x, y, z);
+      scene.add(leg);
+    });
+
+    // Ergonomic Chair
+    const chairSeatGeo = new THREE.BoxGeometry(1.6, 0.2, 1.6);
+    const chairMat = new THREE.MeshStandardMaterial({ color: 0x475569 });
+    const chairSeat = new THREE.Mesh(chairSeatGeo, chairMat);
+    chairSeat.position.set(-1, 1.5, -0.5);
+    scene.add(chairSeat);
+
+    const chairBackGeo = new THREE.BoxGeometry(1.6, 2, 0.2);
+    const chairBack = new THREE.Mesh(chairBackGeo, chairMat);
+    chairBack.position.set(-1, 2.5, 0.3);
+    scene.add(chairBack);
+
+    // 6. Furniture: 3D Sofa / Couch
+    const sofaBaseGeo = new THREE.BoxGeometry(5, 1, 2.2);
+    const sofaMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6 });
+    const sofaBase = new THREE.Mesh(sofaBaseGeo, sofaMat);
+    sofaBase.position.set(3, 0.5, 2.5);
+    scene.add(sofaBase);
+
+    const sofaBackGeo = new THREE.BoxGeometry(5, 1.8, 0.6);
+    const sofaBack = new THREE.Mesh(sofaBackGeo, sofaMat);
+    sofaBack.position.set(3, 1.4, 3.3);
+    scene.add(sofaBack);
+
+    // 7. Furniture: 3D Plant in Pot
+    const potGeo = new THREE.CylinderGeometry(0.6, 0.4, 1.2);
+    const potMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0 });
+    const pot = new THREE.Mesh(potGeo, potMat);
+    pot.position.set(-5, 0.6, 4.5);
+    scene.add(pot);
+
+    const plantLeavesGeo = new THREE.SphereGeometry(0.9, 8, 8);
+    const plantMat = new THREE.MeshStandardMaterial({ color: 0x10b981 });
+    const leaves = new THREE.Mesh(plantLeavesGeo, plantMat);
+    leaves.position.set(-5, 1.8, 4.5);
+    scene.add(leaves);
+
+    // 8. 3D HP Victus Gaming Laptop on Desk
+    const laptopBaseGeo = new THREE.BoxGeometry(1.8, 0.1, 1.2);
+    const laptopMat = new THREE.MeshStandardMaterial({ color: 0x0f172a });
+    const laptopBase = new THREE.Mesh(laptopBaseGeo, laptopMat);
+    laptopBase.position.set(-2.5, 2.7, -3);
+    scene.add(laptopBase);
+
+    const laptopScreenGeo = new THREE.BoxGeometry(1.8, 1.2, 0.08);
+    const laptopScreenMat = new THREE.MeshStandardMaterial({ color: 0x020617, emissive: 0x38bdf8, emissiveIntensity: 0.6 });
+    const laptopScreen = new THREE.Mesh(laptopScreenGeo, laptopScreenMat);
+    laptopScreen.position.set(-2.5, 3.3, -3.5);
+    laptopScreen.rotation.x = -0.15;
+    scene.add(laptopScreen);
+
+    // 9. 3D Retro 2000s CRT Monitor Computer on Desk
+    const crtHousingGeo = new THREE.BoxGeometry(2.2, 1.8, 1.8);
+    const crtMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 });
+    const crtHousing = new THREE.Mesh(crtHousingGeo, crtMat);
+    crtHousing.position.set(0.5, 3.5, -3.2);
+    scene.add(crtHousing);
+
+    const crtScreenGeo = new THREE.PlaneGeometry(1.8, 1.4);
+    const crtScreenMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+    const crtScreenMesh = new THREE.Mesh(crtScreenGeo, crtScreenMat);
+    crtScreenMesh.position.set(0.5, 3.5, -2.29);
+    scene.add(crtScreenMesh);
+
+    // Animation Render Loop
+    let animationId: number;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // Window Resize Handler
+    const handleResize = () => {
+      if (!container) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationId);
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
   }, []);
 
   return (
     <section id="my-room" className="py-24 border-t border-slate-800/60 bg-[#060911] relative overflow-hidden">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-indigo-600/10 blur-[140px] rounded-full pointer-events-none" />
-
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
 
         {/* Section Header */}
         <div className="space-y-4 max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20">
-            <Cpu className="w-3.5 h-3.5" />
-            <span>MY WORKSPACE & SETUP</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>REAL 3D WORKSPACE EXPERIENCE</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            My 3D Developer Room & Rig
+            My 3D Interactive Room
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
-            An interactive 3D view of my daily engineering setup: **HP Victus Gaming Laptop** running Kali Linux & VS Code, paired with a **Retro 2000s CRT Monitor** running live pixel arcade games.
+            A full 3D isometric room featuring 3D walls, couch, houseplant, desk, chair, **HP Victus Laptop** (Kali Linux + VS Code), and **Retro 2000s CRT Monitor** (Space Invaders). Drag to rotate 360°, scroll to zoom in/out!
           </p>
         </div>
 
-        {/* 3D Tilt Viewport Container */}
-        <div
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
-            transition: "transform 0.1s ease-out"
-          }}
-          className="glass-card rounded-3xl border border-slate-800 p-6 sm:p-10 space-y-8 bg-[#090d18]/90 shadow-2xl relative"
-        >
+        {/* Real 3D Three.js Viewport */}
+        <div className="glass-card rounded-3xl border border-slate-800 p-4 sm:p-6 bg-[#090d18] shadow-2xl relative space-y-6">
 
-          {/* Setup Header & Controls */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-              <div>
-                <h3 className="text-xl font-bold text-white tracking-tight">
-                  Moxirbek's Engineering Rig
-                </h3>
-                <p className="text-xs font-mono text-slate-400">
-                  HP Victus 16 (Kali Linux + VS Code) • Retro CRT 2000s Arcade Station
-                </p>
-              </div>
+          {/* Viewport Control Instructions Bar */}
+          <div className="flex items-center justify-between px-4 py-2 bg-slate-900/80 rounded-xl border border-slate-800 font-mono text-xs text-slate-300">
+            <div className="flex items-center gap-2">
+              <ZoomIn className="w-4 h-4 text-cyan-400" />
+              <span>Click & Drag to Rotate 360° • Scroll Wheel to Zoom In / Out</span>
             </div>
-
-            <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Interactive 3D Tilt Viewport</span>
-            </div>
+            <span className="hidden sm:inline text-indigo-400 font-semibold">Three.js 3D WebGL</span>
           </div>
 
-          {/* 3D Desk Scene Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Three.js Canvas Container */}
+          <div ref={mountRef} className="w-full h-[480px] rounded-2xl overflow-hidden border border-slate-800/80 bg-[#050810]" />
 
-            {/* RIG ITEM 1: HP Victus Laptop (Kali Linux & VS Code Live Action) */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 uppercase">
-                  <Laptop className="w-4 h-4" />
-                  <span>HP Victus (Kali Linux + VS Code)</span>
-                </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">
-                  Live Terminal & Code Action
+          {/* Live Action Displays: HP Victus Kali Linux & Retro CRT Arcade */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+
+            {/* Live HP Victus Displey */}
+            <div className="p-4 rounded-2xl bg-[#070b14] border border-slate-800 space-y-3 font-mono text-xs">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="flex items-center gap-2 text-cyan-400 font-bold">
+                  <Laptop className="w-4 h-4" /> HP VICTUS (Kali Linux + VS Code)
                 </span>
+                <span className="text-[10px] text-emerald-400">Live Code Stream</span>
               </div>
-
-              {/* Laptop Shell Mockup */}
-              <div className="rounded-2xl border border-slate-800 bg-[#050810] overflow-hidden shadow-2xl">
-                {/* Screen Bezel Bar */}
-                <div className="px-4 py-2 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
-                    <span className="text-[11px] text-slate-300 ml-2">root@kali-linux: ~/moxirbek/educoin</span>
+              <div className="h-32 overflow-y-auto space-y-1 text-[11px] leading-relaxed text-slate-300">
+                {kaliLogs.slice(0, 6).map((log, idx) => (
+                  <div key={idx} className={log.startsWith("root@") ? "text-emerald-400 font-bold" : "text-slate-300"}>
+                    {log}
                   </div>
-                  <span className="text-[10px] text-emerald-400 font-semibold">HP VICTUS 16</span>
-                </div>
-
-                {/* Screen Content: Live Streaming Kali Terminal */}
-                <div className="p-4 font-mono text-[11px] text-slate-300 bg-[#070b14] h-64 overflow-y-auto space-y-1.5 leading-relaxed">
-                  {kaliLogs.map((log, idx) => (
-                    <div
-                      key={idx}
-                      className={
-                        log.startsWith("root@")
-                          ? "text-emerald-400 font-bold"
-                          : log.includes("PORT")
-                          ? "text-sky-300 font-semibold"
-                          : "text-slate-300"
-                      }
-                    >
-                      {log}
-                    </div>
-                  ))}
-                  <div className="flex items-center gap-1 text-emerald-400 font-bold animate-pulse pt-2">
-                    <span>root@kali-linux:~# </span>
-                    <span className="w-2 h-4 bg-emerald-400 inline-block"></span>
-                  </div>
-                </div>
-
-                {/* Keyboard Base & RGB Light Strip */}
-                <div className="p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-sky-400 animate-ping"></div>
-                    <span>Victus RGB Keyboard (Backlit)</span>
-                  </div>
-                  <span className="text-indigo-400">TypeScript / NestJS</span>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* RIG ITEM 2: Retro 2000s CRT Monitor (Live Pixel Arcade Game) */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-400 uppercase">
-                  <Gamepad2 className="w-4 h-4" />
-                  <span>Retro 2000s CRT Arcade Computer</span>
-                </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">
-                  Score: {gameScore}
+            {/* Live Retro CRT Displey */}
+            <div className="p-4 rounded-2xl bg-[#070b14] border border-slate-800 space-y-3 font-mono text-xs">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="flex items-center gap-2 text-amber-400 font-bold">
+                  <Gamepad2 className="w-4 h-4" /> RETRO 2000s CRT MONITOR
                 </span>
+                <span className="text-[10px] text-amber-400 font-bold">Score: {gameScore}</span>
               </div>
-
-              {/* CRT Monitor Mockup Frame */}
-              <div className="rounded-3xl border-4 border-slate-800 bg-slate-900 p-4 shadow-2xl relative">
-                {/* CRT Screen Frame */}
-                <div className="rounded-2xl border-2 border-slate-950 bg-[#050b14] overflow-hidden relative shadow-inner">
-                  {/* Canvas Arcade Game */}
-                  <canvas
-                    ref={canvasRef}
-                    width={320}
-                    height={220}
-                    className="w-full h-64 object-cover"
-                  />
-
-                  {/* Scanline CRT Glass Reflection */}
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/5 via-transparent to-black/30" />
-                </div>
-
-                {/* CRT Monitor Bezel Controls */}
-                <div className="mt-3 flex items-center justify-between text-[10px] font-mono text-slate-400 px-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-red-500 border border-red-400"></span>
-                    <span>CRT MONITOR 2000 (1024x768)</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>POWER ON</span>
-                  </div>
-                </div>
+              <div className="rounded-xl overflow-hidden border border-slate-800">
+                <canvas ref={crtCanvasRef} width={320} height={120} className="w-full h-32 object-cover" />
               </div>
             </div>
 
-          </div>
-
-          {/* Desk Setup Extras Footer */}
-          <div className="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-slate-400">
-            <div className="flex items-center gap-3">
-              <span>☕ CS Coffee Mug</span>
-              <span>•</span>
-              <span>🎧 Studio Headphones</span>
-              <span>•</span>
-              <span>⌨️ Mechanical Switches</span>
-            </div>
-            <div className="flex items-center gap-2 text-indigo-400 font-semibold">
-              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              <span>Live Action Setup Synchronized</span>
-            </div>
           </div>
 
         </div>

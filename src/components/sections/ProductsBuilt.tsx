@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PORTFOLIO_DATA, Product } from "@/lib/data/portfolioData";
-import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow } from "lucide-react";
+import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow, Lock, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/ui/SocialIcons";
 import {
   EducoinArchitectureSVG,
@@ -20,6 +20,8 @@ export default function ProductsBuilt() {
     "mk-academy": "architecture",
     "instagram-bot": "architecture"
   });
+
+  const [tooltipId, setTooltipId] = useState<string | null>(null);
 
   const getArchitectureSVG = (id: string) => {
     switch (id) {
@@ -63,7 +65,7 @@ export default function ProductsBuilt() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="glass-card rounded-3xl border border-slate-800 p-6 sm:p-10 space-y-8 hover:border-slate-700 transition-all shadow-2xl"
+              className="glass-card rounded-3xl border border-slate-800 p-6 sm:p-10 space-y-8 hover:border-slate-700 transition-all shadow-2xl relative"
             >
               {/* Product Header */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
@@ -81,8 +83,33 @@ export default function ProductsBuilt() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  {product.githubUrl && (
+                {/* Repository Button with Private Tooltip */}
+                <div className="relative flex items-center gap-3">
+                  {product.isPrivate ? (
+                    <div
+                      onMouseEnter={() => setTooltipId(product.id)}
+                      onMouseLeave={() => setTooltipId(null)}
+                      className="relative"
+                    >
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setTooltipId(product.id);
+                        }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 bg-slate-900 border border-slate-800 cursor-not-allowed opacity-90 transition-all"
+                      >
+                        <Lock className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Private Codebase</span>
+                      </button>
+
+                      {/* Hover Tooltip */}
+                      {tooltipId === product.id && (
+                        <div className="absolute right-0 bottom-full mb-2 w-56 p-2.5 rounded-xl bg-slate-950 border border-amber-500/40 shadow-2xl text-[11px] font-mono text-amber-300 z-30 pointer-events-none">
+                          🔒 This is a private commercial repository. Code snippets are displayed below.
+                        </div>
+                      )}
+                    </div>
+                  ) : (
                     <a
                       href={product.githubUrl}
                       target="_blank"
@@ -90,7 +117,7 @@ export default function ProductsBuilt() {
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-all"
                     >
                       <GithubIcon className="w-3.5 h-3.5" />
-                      <span>Deep Link Repo</span>
+                      <span>Public Repository</span>
                     </a>
                   )}
                 </div>

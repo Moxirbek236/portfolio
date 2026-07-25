@@ -16,6 +16,7 @@ export interface Product {
     code: string;
   };
   githubUrl?: string;
+  isPrivate?: boolean;
   liveUrl?: string;
 }
 
@@ -89,8 +90,8 @@ export class TenantIsolationMiddleware implements NestMiddleware {
   }
 }`
       },
-      githubUrl: "https://github.com/Moxirbek236/educoin",
-      liveUrl: "https://github.com/Moxirbek236/educoin"
+      isPrivate: true,
+      githubUrl: "#"
     },
     {
       id: "ross-messenger",
@@ -99,7 +100,7 @@ export class TenantIsolationMiddleware implements NestMiddleware {
       period: "2025.11 – 2026.02",
       role: "Full-Stack Engineer & Telecom DevOps",
       description: "Cross-platform messaging and VoIP application featuring end-to-end encrypted peer-to-peer voice calls, custom media proxy, and virtualized chat lists.",
-      problem: "Standard browser-based audio streams struggle with packet latency and memory consumption when rendering thousands of chat messages.",
+      problem: "Standard browser-based audio streams struggle with packet latency and memory consumption during high-frequency message rendering.",
       solution: "Built a custom Node.js WebRTC-to-UDP media proxy with AES-256-CTR packet encryption, Diffie-Hellman key exchanges, and react-window message virtualization.",
       tags: ["Next.js", "Node.js", "WebRTC", "Socket.IO", "Zustand", "Framer Motion", "Capacitor"],
       metrics: [
@@ -111,7 +112,7 @@ export class TenantIsolationMiddleware implements NestMiddleware {
       features: [
         "Node.js WebRTC-to-UDP proxy for low-latency peer-to-peer audio transmission",
         "On-the-fly AES-256-CTR packet payload encryption and key rotation",
-        "react-window list virtualization for zero memory leaks during infinite scroll",
+        "react-window list virtualization preventing memory leaks during infinite scroll",
         "Zustand state store synchronizing WebSockets and active WebRTC calls"
       ],
       codeSnippet: {
@@ -129,8 +130,8 @@ export class UDPPayloadCrypto {
   }
 }`
       },
-      githubUrl: "https://github.com/Moxirbek236/portfolio",
-      liveUrl: "https://github.com/Moxirbek236/portfolio"
+      isPrivate: true,
+      githubUrl: "#"
     },
     {
       id: "mk-academy",
@@ -164,8 +165,8 @@ export class UDPPayloadCrypto {
   return { nextBox, daysInterval: intervals[nextBox - 1] };
 }`
       },
-      githubUrl: "https://github.com/Moxirbek236/portfolio",
-      liveUrl: "https://github.com/Moxirbek236/portfolio"
+      isPrivate: true,
+      githubUrl: "#"
     },
     {
       id: "instagram-bot",
@@ -200,8 +201,8 @@ export class UDPPayloadCrypto {
   return { proxy, delayMs };
 }`
       },
-      githubUrl: "https://github.com/Moxirbek236/portfolio",
-      liveUrl: "https://github.com/Moxirbek236/portfolio"
+      isPrivate: true,
+      githubUrl: "#"
     }
   ] as Product[],
 
@@ -230,9 +231,9 @@ export class UDPPayloadCrypto {
       tags: ["NestJS", "Prisma", "PostgreSQL", "Multi-Tenancy", "RBAC"],
       summary: "Multi-tenant SaaS applications must prevent cross-tenant data leaks. Bypassing row-level security through tenant header middleware and Prisma client extensions.",
       content: [
-        "1. Context isolation: Extracting `X-Tenant-ID` header at the NestJS HTTP middleware level.",
-        "2. Prisma middleware: Intercepting every SQL query to automatically scope `where: { tenantId }` conditions.",
-        "3. RBAC Guards: Decorating controllers with `@Roles(Role.ADMIN, Role.TEACHER)` for dynamic permission checks.",
+        "1. Context isolation: Extracting X-Tenant-ID header at the NestJS HTTP middleware level.",
+        "2. Prisma middleware: Intercepting every SQL query to automatically scope where: { tenantId } conditions.",
+        "3. RBAC Guards: Decorating controllers with @Roles(Role.ADMIN, Role.TEACHER) for dynamic permission checks.",
         "4. Observability: Adding OpenTelemetry spans to trace query duration across tenant boundaries."
       ]
     }
