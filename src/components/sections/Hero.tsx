@@ -1,14 +1,18 @@
 "use client";
 
 import { PORTFOLIO_DATA } from "@/lib/data/portfolioData";
-import { ArrowDown, Command, Download, Terminal, Sparkles } from "lucide-react";
+import { Language, I18N_DATA } from "@/lib/data/i18nData";
+import { ArrowDown, Command, Download } from "lucide-react";
 import { GithubIcon, TelegramIcon } from "@/components/ui/SocialIcons";
 
 interface HeroProps {
+  lang: Language;
   onOpenCommandPalette: () => void;
 }
 
-export default function Hero({ onOpenCommandPalette }: HeroProps) {
+export default function Hero({ lang, onOpenCommandPalette }: HeroProps) {
+  const t = I18N_DATA[lang];
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#080c14]">
       {/* Glow Effects */}
@@ -19,16 +23,16 @@ export default function Hero({ onOpenCommandPalette }: HeroProps) {
         {/* Live Status Bar */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-xs font-mono bg-slate-900/90 border border-slate-800 shadow-xl">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
-          <span className="text-slate-300">{PORTFOLIO_DATA.personal.nowStatus}</span>
+          <span className="text-slate-300">{t.nowStatus}</span>
         </div>
 
         {/* Headline */}
         <div className="space-y-4">
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
-            I build <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-cyan-400">multi-tenant SaaS</span>, WebRTC voice systems, & Telegram automation.
+            {t.heroHeadline}
           </h1>
           <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-300 leading-relaxed">
-            {PORTFOLIO_DATA.personal.storyBio}
+            {t.heroSub}
           </p>
         </div>
 
@@ -38,7 +42,7 @@ export default function Hero({ onOpenCommandPalette }: HeroProps) {
             href="#work"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
           >
-            <span>Explore Products & Systems</span>
+            <span>{t.exploreProducts}</span>
             <ArrowDown className="w-4 h-4" />
           </a>
 
@@ -48,7 +52,7 @@ export default function Hero({ onOpenCommandPalette }: HeroProps) {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-slate-200 bg-slate-900 border border-slate-800 hover:border-amber-500/50 hover:text-white transition-all shadow-lg active:scale-95"
           >
             <Download className="w-4 h-4 text-amber-400" />
-            <span>Download PDF CV</span>
+            <span>{t.downloadPdfCv}</span>
           </a>
 
           <button

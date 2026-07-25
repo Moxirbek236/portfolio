@@ -1,19 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { PORTFOLIO_DATA } from "@/lib/data/portfolioData";
-import { Terminal, Download, Menu, X, Command, FileText } from "lucide-react";
+import { Language, I18N_DATA } from "@/lib/data/i18nData";
+import { Terminal, Download, Menu, X, Command, Sun, Moon, Laptop } from "lucide-react";
 
 interface NavbarProps {
+  lang: Language;
+  onLanguageChange: (lang: Language) => void;
   onOpenCommandPalette: () => void;
   onOpenTerminal: () => void;
 }
 
-export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarProps) {
+export default function Navbar({
+  lang,
+  onLanguageChange,
+  onOpenCommandPalette,
+  onOpenTerminal
+}: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -21,13 +33,17 @@ export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarP
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const tNav = I18N_DATA[lang].nav;
+
   const navLinks = [
-    { name: "Work", href: "#work" },
-    { name: "Deep Dives", href: "#deep-dives" },
-    { name: "3D Room", href: "#my-room" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: tNav.work, href: "#work" },
+    { name: tNav.deepDives, href: "#deep-dives" },
+    { name: tNav.room, href: "#my-room" },
+    { name: tNav.about, href: "#about" },
+    { name: tNav.contact, href: "#contact" },
   ];
+
+  const languages: Language[] = ["EN", "UZ", "RU"];
 
   return (
     <header
@@ -39,7 +55,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarP
         
         {/* Brand Name */}
         <a href="#" className="flex items-center gap-2 shrink-0 group">
-          <span className="font-bold text-base sm:text-lg text-white tracking-tight group-hover:text-amber-400 transition-colors">
+          <span className="font-bold text-base sm:text-lg text-white dark:text-white light:text-slate-900 tracking-tight group-hover:text-amber-400 transition-colors">
             {PORTFOLIO_DATA.personal.name}
           </span>
           <span className="hidden xl:inline text-xs font-mono text-slate-400 border-l border-slate-800 pl-2.5">
@@ -47,8 +63,8 @@ export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarP
           </span>
         </a>
 
-        {/* Desktop Navigation (Clean 5 items) */}
-        <nav className="hidden lg:flex items-center gap-6 text-sm text-slate-300 font-medium">
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-6 text-sm text-slate-300 dark:text-slate-300 font-medium">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -60,43 +76,59 @@ export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarP
           ))}
         </nav>
 
-        {/* Action Buttons: CLI (Ctrl+~), Palette (Cmd+K), PDF CV, PDF Resume */}
+        {/* Action Controls: i18n Selector, Theme Toggle, CLI, PDF CV */}
         <div className="flex items-center gap-2 shrink-0">
+
+          {/* i18n Language Switcher (EN | UZ | RU) */}
+          <div className="flex items-center p-0.5 rounded-lg bg-slate-900/90 border border-slate-800 text-[11px] font-mono text-slate-400">
+            {languages.map((l) => (
+              <button
+                key={l}
+                onClick={() => onLanguageChange(l)}
+                className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
+                  lang === l
+                    ? "bg-amber-500 text-slate-950 font-bold"
+                    : "hover:text-white"
+                }`}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+
+          {/* Light / Dark Theme Switcher Button */}
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/50 transition-all cursor-pointer"
+              title="Toggle Light / Dark Theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-3.5 h-3.5 text-amber-400" />
+              ) : (
+                <Moon className="w-3.5 h-3.5 text-indigo-400" />
+              )}
+            </button>
+          )}
 
           {/* Dedicated CLI Terminal Button */}
           <button
             onClick={onOpenTerminal}
             className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800 hover:bg-emerald-900/80 hover:text-white transition-all cursor-pointer shadow-md"
-            title="Open CLI Terminal (Ctrl+~ or Ctrl+J)"
+            title="Open CLI Terminal (Ctrl+~)"
           >
             <Terminal className="w-3.5 h-3.5 text-emerald-400" />
             <span className="font-bold font-mono text-xs hidden sm:inline">CLI</span>
-            <kbd className="hidden xl:inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-900 text-emerald-400 border border-emerald-900">
-              Ctrl+~
-            </kbd>
-          </button>
-
-          {/* Command Palette Button */}
-          <button
-            onClick={onOpenCommandPalette}
-            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 hover:text-white transition-all cursor-pointer"
-            title="Open Command Palette (Cmd+K)"
-          >
-            <Command className="w-3.5 h-3.5 text-amber-400" />
-            <span>Palette</span>
-            <kbd className="hidden xl:inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">
-              ⌘K
-            </kbd>
           </button>
 
           {/* PDF CV Download Button */}
           <a
             href="/Moxirbek-Solijonov-CV.pdf"
             download="Moxirbek-Solijonov-CV.pdf"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-600 hover:bg-amber-500 transition-all shadow-md shadow-amber-600/20 active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-600 hover:bg-amber-500 transition-all shadow-md active:scale-95"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>PDF CV</span>
+            <span>CV</span>
           </a>
 
           {/* Mobile Menu Button */}

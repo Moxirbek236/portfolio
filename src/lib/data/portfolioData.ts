@@ -73,7 +73,7 @@ export const PORTFOLIO_DATA = {
         "Gamified student rewards system with coin economy & marketplace",
         "Docker containerization with GitLab CI/CD automated deployment pipeline"
       ],
-      imageUrl: "/educoin-ui.png",
+      imageUrl: "/educoin-ui.jpg",
       codeSnippet: {
         filename: "src/common/middleware/tenant-isolation.middleware.ts",
         language: "typescript",
@@ -117,7 +117,7 @@ export class TenantIsolationMiddleware implements NestMiddleware {
         "react-window list virtualization preventing memory leaks during infinite scroll",
         "Zustand state store synchronizing WebSockets and active WebRTC calls"
       ],
-      imageUrl: "/ross-ui.png",
+      imageUrl: "/ross-ui.jpg",
       codeSnippet: {
         filename: "server/webrtc-proxy/udp-crypto.service.ts",
         language: "typescript",
@@ -157,7 +157,7 @@ export class UDPPayloadCrypto {
         "Gamified XP, streaks, levels, and unlockable achievement badges",
         "Capacitor mobile pipeline generating production native Android packages"
       ],
-      imageUrl: "/mk-ui.png",
+      imageUrl: "/mk-ui.jpg",
       codeSnippet: {
         filename: "src/lib/spaced-repetition/leitner.engine.ts",
         language: "typescript",
@@ -193,7 +193,7 @@ export class UDPPayloadCrypto {
         "Direct memory stream piping from CDN source to Telegram API",
         "Automatic audio extraction fallback when video downloads are restricted"
       ],
-      imageUrl: "/instabot-ui.png",
+      imageUrl: "/instabot-ui.jpg",
       codeSnippet: {
         filename: "src/queue/proxy-jitter.queue.ts",
         language: "typescript",

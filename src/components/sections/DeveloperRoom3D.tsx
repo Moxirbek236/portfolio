@@ -41,13 +41,13 @@ export default function DeveloperRoom3D() {
     // Load High-Definition Screenshots via TextureLoader
     const textureLoader = new THREE.TextureLoader();
 
-    const cs16Texture = textureLoader.load("/cs16-screen.png", (tex) => {
+    const cs16Texture = textureLoader.load("/cs16-screen.jpg", (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.minFilter = THREE.LinearFilter;
       tex.magFilter = THREE.LinearFilter;
     });
 
-    const kaliTexture = textureLoader.load("/kali-screen.png", (tex) => {
+    const kaliTexture = textureLoader.load("/kali-screen.jpg", (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.minFilter = THREE.LinearFilter;
       tex.magFilter = THREE.LinearFilter;
