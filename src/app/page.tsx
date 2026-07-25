@@ -9,18 +9,31 @@ import AboutStory from "@/components/sections/AboutStory";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 import CommandPalette from "@/components/layout/CommandPalette";
+import TerminalModal from "@/components/layout/TerminalModal";
+import AangCursorFollower from "@/components/ui/AangCursorFollower";
 
 export default function Home() {
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [terminalOpen, setTerminalOpen] = useState(false);
 
   useEffect(() => {
-    const handleCustomOpen = () => setPaletteOpen(true);
-    window.addEventListener("open-command-palette", handleCustomOpen);
-    return () => window.removeEventListener("open-command-palette", handleCustomOpen);
+    const handleCustomPalette = () => setPaletteOpen(true);
+    const handleCustomTerminal = () => setTerminalOpen(true);
+
+    window.addEventListener("open-command-palette", handleCustomPalette);
+    window.addEventListener("open-terminal", handleCustomTerminal);
+
+    return () => {
+      window.removeEventListener("open-command-palette", handleCustomPalette);
+      window.removeEventListener("open-terminal", handleCustomTerminal);
+    };
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#080C14] text-slate-100 flex flex-col selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen bg-[#080C14] text-slate-100 flex flex-col selection:bg-indigo-600 selection:text-white relative">
+      {/* Anime Avatar Aang Mouse Follower */}
+      <AangCursorFollower />
+
       {/* Sticky Blur Header Navbar */}
       <Navbar onOpenCommandPalette={() => setPaletteOpen(true)} />
 
@@ -38,6 +51,9 @@ export default function Home() {
 
       {/* Functional ⌘K Command Palette Modal */}
       <CommandPalette isOpen={paletteOpen} onClose={() => setPaletteOpen(false)} />
+
+      {/* CLI Interactive Terminal Modal */}
+      <TerminalModal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
     </div>
   );
 }
