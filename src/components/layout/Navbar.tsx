@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { PORTFOLIO_DATA } from "@/lib/data/portfolioData";
-import { Terminal, Download, Menu, X } from "lucide-react";
+import { Terminal, Download, Menu, X, Command } from "lucide-react";
 
 interface NavbarProps {
   onOpenCommandPalette: () => void;
+  onOpenTerminal: () => void;
 }
 
-export default function Navbar({ onOpenCommandPalette }: NavbarProps) {
+export default function Navbar({ onOpenCommandPalette, onOpenTerminal }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -23,6 +24,7 @@ export default function Navbar({ onOpenCommandPalette }: NavbarProps) {
   const navLinks = [
     { name: "Work", href: "#work" },
     { name: "Deep Dives", href: "#deep-dives" },
+    { name: "3D Setup", href: "#my-room" },
     { name: "About", href: "#about" },
     { name: "Contact", href: "#contact" },
   ];
@@ -45,8 +47,8 @@ export default function Navbar({ onOpenCommandPalette }: NavbarProps) {
           </span>
         </a>
 
-        {/* Clean 4-Item Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-sm text-slate-300 font-medium">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6 text-sm text-slate-300 font-medium">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -58,27 +60,43 @@ export default function Navbar({ onOpenCommandPalette }: NavbarProps) {
           ))}
         </nav>
 
-        {/* Actions: Command Palette & PDF CV Download */}
-        <div className="flex items-center gap-3">
+        {/* Actions: Terminal Button (Ctrl+T), Palette Button (Cmd+K), PDF CV */}
+        <div className="flex items-center gap-2 sm:gap-3">
+
+          {/* Dedicated CLI Terminal Button (Ctrl + T) */}
+          <button
+            onClick={onOpenTerminal}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800 hover:bg-emerald-900/80 hover:text-white transition-all cursor-pointer shadow-lg shadow-emerald-950/30"
+            title="Open Interactive CLI Terminal (Ctrl+T)"
+          >
+            <Terminal className="w-3.5 h-3.5" />
+            <span className="font-bold">&gt;_ CLI</span>
+            <kbd className="hidden lg:inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-900 text-emerald-400 border border-emerald-900">
+              Ctrl+T
+            </kbd>
+          </button>
+
+          {/* Command Palette Button (Cmd + K) */}
           <button
             onClick={onOpenCommandPalette}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all cursor-pointer"
             title="Open Command Palette (Cmd+K)"
           >
-            <Terminal className="w-3.5 h-3.5 text-indigo-400" />
+            <Command className="w-3.5 h-3.5 text-indigo-400" />
             <span className="hidden sm:inline">Palette</span>
-            <kbd className="hidden md:inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">
+            <kbd className="hidden lg:inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">
               ⌘K
             </kbd>
           </button>
 
+          {/* PDF CV Download Button */}
           <a
             href="/Moxirbek-Solijonov-CV.pdf"
             download="Moxirbek-Solijonov-CV.pdf"
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/20 active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/20 active:scale-95"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>PDF CV</span>
+            <span className="hidden sm:inline">PDF CV</span>
           </a>
 
           {/* Mobile Menu Button */}
