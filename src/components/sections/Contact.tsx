@@ -80,8 +80,9 @@ export default function Contact() {
                     href={prefilledMailto}
                     className="p-2 rounded-lg text-amber-400 hover:text-white hover:bg-slate-900 border border-slate-800 transition-all text-xs flex items-center gap-1"
                     title="Open Email Client"
+                    aria-label="Send email to Moxirbek Solijonov"
                   >
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
                     <span className="hidden sm:inline">Mailto</span>
                   </a>
 
@@ -89,8 +90,9 @@ export default function Contact() {
                     onClick={handleCopyEmail}
                     className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 border border-slate-800 transition-all text-xs flex items-center gap-1.5 cursor-pointer"
                     title="Copy Email Address"
+                    aria-label={copied ? "Email address copied" : "Copy email address"}
                   >
-                    {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                    {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-400" aria-hidden="true" /> : <Copy className="w-4 h-4" aria-hidden="true" />}
                     <span className="hidden sm:inline">{copied ? "Copied!" : "Copy"}</span>
                   </button>
                 </div>
@@ -100,8 +102,9 @@ export default function Contact() {
               <a
                 href={PORTFOLIO_DATA.personal.telegram}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between gap-3 hover:border-amber-500/40 transition-colors group"
+                aria-label={`Open Telegram DM with ${PORTFOLIO_DATA.personal.telegramHandle}`}
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
@@ -134,22 +137,22 @@ export default function Contact() {
               <a
                 href={PORTFOLIO_DATA.personal.github}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-400 hover:border-amber-500/40 transition-colors flex items-center gap-2 text-xs font-mono"
-                title="GitHub Profile"
+                aria-label="GitHub profile"
               >
-                <GithubIcon className="w-4 h-4" />
+                <GithubIcon className="w-4 h-4" aria-hidden="true" />
                 <span>GitHub</span>
               </a>
 
               <a
                 href={PORTFOLIO_DATA.personal.linkedin}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/40 transition-colors flex items-center gap-2 text-xs font-mono"
-                title="LinkedIn Profile"
+                aria-label="LinkedIn profile"
               >
-                <LinkedinIcon className="w-4 h-4" />
+                <LinkedinIcon className="w-4 h-4" aria-hidden="true" />
                 <span>LinkedIn</span>
               </a>
             </div>
@@ -176,10 +179,11 @@ export default function Contact() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4" aria-label="Contact form">
                 <div>
-                  <label className="block text-xs font-mono text-slate-400 uppercase mb-1">Your Name</label>
+                  <label htmlFor="contact-name" className="block text-xs font-mono text-slate-400 uppercase mb-1">Your Name</label>
                   <input
+                    id="contact-name"
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -189,8 +193,9 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-slate-400 uppercase mb-1">Your Email</label>
+                  <label htmlFor="contact-email" className="block text-xs font-mono text-slate-400 uppercase mb-1">Your Email</label>
                   <input
+                    id="contact-email"
                     type="email"
                     required
                     value={formData.email}
@@ -201,8 +206,9 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-slate-400 uppercase mb-1">Message</label>
+                  <label htmlFor="contact-message" className="block text-xs font-mono text-slate-400 uppercase mb-1">Message</label>
                   <textarea
+                    id="contact-message"
                     required
                     rows={4}
                     value={formData.message}
@@ -215,8 +221,9 @@ export default function Contact() {
                 <button
                   type="submit"
                   className="w-full py-3 rounded-xl font-semibold text-sm text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                  aria-label="Send direct message"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4" aria-hidden="true" />
                   <span>Send Direct Message</span>
                 </button>
               </form>

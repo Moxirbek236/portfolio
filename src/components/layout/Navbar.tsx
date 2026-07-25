@@ -105,15 +105,16 @@ export default function Navbar({
 
           {/* Light / Dark Theme Switcher Button */}
           {mounted && (
-            <button
+                      <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="p-2 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/50 transition-all cursor-pointer"
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               title="Toggle Light / Dark Theme"
             >
               {theme === "dark" ? (
-                <Sun className="w-3.5 h-3.5 text-amber-400" />
+                <Sun className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
               ) : (
-                <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                <Moon className="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
               )}
             </button>
           )}
@@ -139,18 +140,21 @@ export default function Navbar({
           </a>
 
           {/* Mobile Menu Button */}
-          <button
+                    <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 border border-slate-800"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#0c101a] border-b border-slate-800 px-4 pt-3 pb-6 space-y-3">
+        <div id="mobile-nav" className="lg:hidden bg-[#0c101a] border-b border-slate-800 px-4 pt-3 pb-6 space-y-3" role="navigation" aria-label="Mobile navigation">
           <nav className="flex flex-col space-y-2 font-medium text-sm text-slate-300">
             {navLinks.map((link) => (
               <a

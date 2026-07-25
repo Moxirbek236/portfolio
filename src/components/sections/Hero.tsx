@@ -58,8 +58,9 @@ export default function Hero({ lang, onOpenCommandPalette }: HeroProps) {
           <button
             onClick={onOpenCommandPalette}
             className="inline-flex items-center gap-2 px-4 py-3 rounded-xl font-mono text-xs text-slate-400 bg-slate-900/80 border border-slate-800 hover:border-slate-700 hover:text-slate-200 transition-all"
+            aria-label="Open command palette"
           >
-            <Command className="w-3.5 h-3.5 text-cyan-400" />
+            <Command className="w-3.5 h-3.5 text-cyan-400" aria-hidden="true" />
             <span>Palette (⌘K)</span>
           </button>
         </div>
@@ -69,20 +70,22 @@ export default function Hero({ lang, onOpenCommandPalette }: HeroProps) {
           <a
             href={PORTFOLIO_DATA.personal.github}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 hover:text-amber-400 transition-colors"
+            aria-label="GitHub profile — github.com/Moxirbek236"
           >
-            <GithubIcon className="w-4 h-4" />
+            <GithubIcon className="w-4 h-4" aria-hidden="true" />
             <span>github.com/Moxirbek236</span>
           </a>
 
           <a
             href={PORTFOLIO_DATA.personal.telegram}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 hover:text-cyan-400 transition-colors"
+            aria-label={`Telegram — ${PORTFOLIO_DATA.personal.telegramHandle}`}
           >
-            <TelegramIcon className="w-4 h-4" />
+            <TelegramIcon className="w-4 h-4" aria-hidden="true" />
             <span>{PORTFOLIO_DATA.personal.telegramHandle}</span>
           </a>
         </div>
