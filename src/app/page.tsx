@@ -3,47 +3,41 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
-import AboutStory from "@/components/sections/AboutStory";
 import ProductsBuilt from "@/components/sections/ProductsBuilt";
-import Highlights from "@/components/sections/Highlights";
-import SkillsMatrix from "@/components/sections/SkillsMatrix";
-import Experience from "@/components/sections/Experience";
-import TargetRoles from "@/components/sections/TargetRoles";
+import DeepDives from "@/components/sections/DeepDives";
+import AboutStory from "@/components/sections/AboutStory";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
-import TerminalModal from "@/components/layout/TerminalModal";
+import CommandPalette from "@/components/layout/CommandPalette";
 
 export default function Home() {
-  const [terminalOpen, setTerminalOpen] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
 
   useEffect(() => {
-    const handleCustomOpen = () => setTerminalOpen(true);
-    window.addEventListener("open-terminal", handleCustomOpen);
-    return () => window.removeEventListener("open-terminal", handleCustomOpen);
+    const handleCustomOpen = () => setPaletteOpen(true);
+    window.addEventListener("open-command-palette", handleCustomOpen);
+    return () => window.removeEventListener("open-command-palette", handleCustomOpen);
   }, []);
 
   return (
     <div className="min-h-screen bg-[#080C14] text-slate-100 flex flex-col selection:bg-indigo-600 selection:text-white">
       {/* Sticky Blur Header Navbar */}
-      <Navbar onOpenTerminal={() => setTerminalOpen(true)} />
+      <Navbar onOpenCommandPalette={() => setPaletteOpen(true)} />
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        <Hero onOpenTerminal={() => setTerminalOpen(true)} />
-        <AboutStory />
+        <Hero onOpenCommandPalette={() => setPaletteOpen(true)} />
         <ProductsBuilt />
-        <Highlights />
-        <SkillsMatrix />
-        <Experience />
-        <TargetRoles />
+        <DeepDives />
+        <AboutStory />
         <Contact />
       </main>
 
       {/* Technical Footer */}
-      <Footer onOpenTerminal={() => setTerminalOpen(true)} />
+      <Footer onOpenCommandPalette={() => setPaletteOpen(true)} />
 
-      {/* Hidden CLI Terminal Easter Egg Modal */}
-      <TerminalModal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
+      {/* Functional ⌘K Command Palette Modal */}
+      <CommandPalette isOpen={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </div>
   );
 }

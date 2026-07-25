@@ -70,7 +70,7 @@ export function handleTerminalCommand(input: string): TerminalOutput {
     case "skills":
       return {
         type: "json",
-        content: PORTFOLIO_DATA.skillCategories
+        content: PORTFOLIO_DATA.skillCapabilities
       };
 
     case "contact":

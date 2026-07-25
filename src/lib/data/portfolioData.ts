@@ -10,396 +10,296 @@ export interface Product {
   tags: string[];
   metrics: string[];
   features: string[];
-  architectureDiagram: {
-    nodes: { label: string; type: "client" | "api" | "db" | "cache" | "realtime" | "queue" }[];
-    flow: string;
+  codeSnippet: {
+    filename: string;
+    language: string;
+    code: string;
   };
   githubUrl?: string;
   liveUrl?: string;
 }
 
-export interface Highlight {
+export interface DeepDiveArticle {
   id: string;
   title: string;
-  productRef: string;
-  tag: string;
+  subtitle: string;
+  date: string;
+  readTime: string;
+  tags: string[];
   summary: string;
-  details: string[];
-  tech: string[];
-}
-
-export interface SkillCategory {
-  title: string;
-  description: string;
-  skills: { name: string; level: string; icon?: string; badge?: string }[];
-}
-
-export interface ExperienceItem {
-  company: string;
-  role: string;
-  period: string;
-  location: string;
-  responsibilities: string[];
-  highlights: string[];
-}
-
-export interface EducationItem {
-  institution: string;
-  course: string;
-  location: string;
-  period: string;
+  content: string[];
 }
 
 export const PORTFOLIO_DATA = {
   personal: {
     name: "Moxirbek Solijonov",
-    role: "Full-Stack Engineer",
+    role: "Full-Stack & Systems Engineer",
     locationPill: "Full-Stack Engineer • Tashkent, Uzbekistan",
-    availability: "Open to Software Engineering Roles",
+    availability: "Available for Senior/Mid Full-Stack & Backend Roles (Remote / Relocation)",
     location: "Tashkent, Uzbekistan",
     phone: "+998 99 145 96 86",
     email: "moxirbekmoxirbek29@gmail.com",
     telegram: "https://t.me/solijonov_m",
     telegramHandle: "@solijonov_m",
-    github: "https://github.com/Moxirbek-Solijonov",
+    github: "https://github.com/Moxirbek236",
     linkedin: "https://linkedin.com/in/moxirbek",
-    headline: "I build production-grade web applications, real-time systems, and developer-focused products from architecture to deployment.",
+    headline: "I build multi-tenant SaaS, WebRTC voice systems, and Telegram automation platforms. Currently teaching CS at Najot Ta'lim.",
     storyBio: "From teaching programming fundamentals at Najot Ta'lim to building multi-tenant educational platforms, real-time communication systems, and automation products, my focus is turning complex ideas into reliable software.",
-    philosophyTitle: "I enjoy solving problems that go beyond CRUD applications.",
-    philosophyPoints: [
-      {
-        title: "Multi-Tenant Architecture",
-        desc: "Designing isolated database schemas, RBAC policies, and modular tenancy for multi-center SaaS products."
-      },
-      {
-        title: "Real-Time Communication",
-        desc: "Building WebRTC media proxies, AES-256 encrypted voice channels, and Socket.IO real-time state synchronization."
-      },
-      {
-        title: "Educational Engineering",
-        desc: "Engineering spaced-repetition engines, offline-first PWA caching, and gamified achievement systems."
-      },
-      {
-        title: "High-Throughput Automation",
-        desc: "Developing anti-blocking Telegram scrapers with rotating proxy pools, Redis queues, and streaming pipelines."
-      }
-    ]
   },
 
   products: [
     {
       id: "educoin",
       title: "Educoin",
-      subtitle: "Multi-Tenant Educational CRM & LMS Platform",
+      subtitle: "Multi-Tenant Educational CRM & LMS Backend",
       period: "2026.04 – Present",
-      role: "Lead Backend & Systems Architect",
-      description: "Architected and developed a multi-tenant educational CRM and LMS backend supporting role-based access control across multiple educational centers, payment tracking, and automated student engagement.",
-      problem: "Educational centers struggled with manual attendance, isolated center data, fragmented payment verification, and low student retention due to lack of automated engagement.",
-      solution: "Engineered a unified multi-tenant NestJS backend with tenant-isolated database models, automated attendance tracking, gamified coin rewards marketplace, and Telegram bot integration for real-time notifications.",
-      tags: ["NestJS", "TypeScript", "PostgreSQL", "Prisma", "Redis", "Docker", "GitLab CI/CD", "OpenTelemetry", "Telegram Bot"],
+      role: "Backend Architect",
+      description: "Multi-tenant CRM and LMS platform supporting tenant isolation across educational centers, automated attendance accounting, coin reward marketplace, and Redis OTP verification.",
+      problem: "Educational centers lacked isolated multi-tenancy, resulting in cross-center data leakage risks and fragmented attendance & payment accounting.",
+      solution: "Engineered a tenant-isolated NestJS backend utilizing Prisma middleware, dynamic RBAC guards, Redis OTP authentication, and OpenTelemetry query tracing.",
+      tags: ["NestJS", "TypeScript", "PostgreSQL", "Prisma", "Redis", "Docker", "OpenTelemetry"],
       metrics: [
-        "Multi-Tenant RBAC across isolated educational centers",
-        "Redis-backed OTP verification & JWT auth pipeline",
-        "OpenTelemetry distributed tracing for DB queries",
-        "Automated Telegram Bot for real-time notifications"
+        "Schema-level multi-tenant isolation across educational centers",
+        "Redis-backed OTP verification with 15-minute sliding TTL window",
+        "OpenTelemetry distributed tracing for database query optimization",
+        "Automated Telegram Bot notification dispatch for attendance alerts"
       ],
       features: [
-        "Tenant-isolated schema design with modular role-based access control (RBAC)",
-        "Attendance tracking, automated class scheduling, and payment accounting workflows",
-        "Gamified student reward system with coin economy and integrated reward marketplace",
-        "Redis-backed OTP authentication and secure JWT refresh token rotation",
-        "Docker containerization with automated GitLab CI/CD deployment pipelines",
-        "OpenTelemetry integration for database query optimization and system observability"
+        "Multi-tenant database schema architecture using Prisma tenant middleware",
+        "Role-based access control (RBAC) with NestJS custom decorators",
+        "Gamified student rewards system with coin economy & marketplace",
+        "Docker containerization with GitLab CI/CD automated deployment pipeline"
       ],
-      architectureDiagram: {
-        nodes: [
-          { label: "Client Apps / Web Admin", type: "client" },
-          { label: "NestJS API Gateway", type: "api" },
-          { label: "Redis (OTP & Session Cache)", type: "cache" },
-          { label: "PostgreSQL (Multi-Tenant DB)", type: "db" },
-          { label: "Telegram Notification Bot", type: "queue" },
-          { label: "OpenTelemetry Tracer", type: "realtime" }
-        ],
-        flow: "Client App ──► NestJS API Gateway ──► Redis OTP/Cache ──► PostgreSQL (Prisma ORM) ──► Telegram Bot"
+      codeSnippet: {
+        filename: "src/common/middleware/tenant-isolation.middleware.ts",
+        language: "typescript",
+        code: `import { Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
+
+@Injectable()
+export class TenantIsolationMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    const tenantId = req.headers['x-tenant-id'] as string;
+    if (!tenantId) {
+      throw new UnauthorizedException('Tenant header X-Tenant-ID is required');
+    }
+    // Attach validated tenant context to request lifecycle
+    req['tenantId'] = tenantId;
+    next();
+  }
+}`
       },
-      githubUrl: "https://github.com/Moxirbek-Solijonov",
-      liveUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236/educoin",
+      liveUrl: "https://github.com/Moxirbek236/educoin"
     },
     {
       id: "ross-messenger",
       title: "Ross Messenger",
-      subtitle: "Telegram-Inspired WebRTC Messaging & VoIP Platform",
+      subtitle: "Telegram-Inspired WebRTC Voice & Messaging Engine",
       period: "2025.11 – 2026.02",
-      role: "Full-Stack Engineer & DevOps",
-      description: "Cross-platform messaging and VoIP communication application featuring end-to-end encrypted peer-to-peer voice calls, virtualized chat list rendering, and custom media proxy infrastructure.",
-      problem: "Standard browser-based messaging apps struggle with high-latency audio transmission, memory memory leaks when rendering thousands of messages, and insecure peer-to-peer media paths.",
-      solution: "Developed a custom Node.js WebRTC-to-UDP media proxy with Diffie-Hellman key exchanges, AES-256-CTR packet encryption, and virtualized infinity list rendering using react-window.",
-      tags: ["Next.js", "Node.js", "WebRTC", "TypeScript", "Zustand", "Framer Motion", "Capacitor", "react-window"],
+      role: "Full-Stack Engineer & Telecom DevOps",
+      description: "Cross-platform messaging and VoIP application featuring end-to-end encrypted peer-to-peer voice calls, custom media proxy, and virtualized chat lists.",
+      problem: "Standard browser-based audio streams struggle with packet latency and memory consumption when rendering thousands of chat messages.",
+      solution: "Built a custom Node.js WebRTC-to-UDP media proxy with AES-256-CTR packet encryption, Diffie-Hellman key exchanges, and react-window message virtualization.",
+      tags: ["Next.js", "Node.js", "WebRTC", "Socket.IO", "Zustand", "Framer Motion", "Capacitor"],
       metrics: [
-        "Sub-100ms WebRTC voice call latency via custom UDP proxy",
-        "AES-256-CTR media encryption with Diffie-Hellman exchange",
-        "Virtualized rendering of 10,000+ chat messages at 60 FPS",
+        "Sub-100ms voice packet latency via custom UDP proxy",
+        "AES-256-CTR packet payload encryption with Diffie-Hellman key exchange",
+        "Virtualized infinite scroll list rendering 10,000+ messages at 60 FPS",
         "Cross-platform Android packaging via Capacitor"
       ],
       features: [
-        "Custom Node.js WebRTC-to-UDP media proxy for low-latency peer-to-peer voice calls",
-        "On-the-fly AES-256-CTR encryption and secure Diffie-Hellman key exchange protocols",
-        "Virtualized chat lists using react-window for smooth, memory-efficient infinite scroll",
-        "Zustand lightweight state management for real-time socket connections and active call state",
-        "Cross-platform mobile wrapper via Capacitor for native Android performance",
-        "Framer Motion interactive micro-animations for sleek Linear/Telegram aesthetics"
+        "Node.js WebRTC-to-UDP proxy for low-latency peer-to-peer audio transmission",
+        "On-the-fly AES-256-CTR packet payload encryption and key rotation",
+        "react-window list virtualization for zero memory leaks during infinite scroll",
+        "Zustand state store synchronizing WebSockets and active WebRTC calls"
       ],
-      architectureDiagram: {
-        nodes: [
-          { label: "User A (Next.js PWA / Android)", type: "client" },
-          { label: "Signaling Server (Socket.IO)", type: "realtime" },
-          { label: "Node.js WebRTC-to-UDP Proxy", type: "api" },
-          { label: "AES-256-CTR Crypto Pipeline", type: "db" },
-          { label: "User B (Peer Recipient)", type: "client" }
-        ],
-        flow: "User A ──► Socket.IO Signaling ──► Node.js WebRTC UDP Proxy (AES-256-CTR) ──► User B"
+      codeSnippet: {
+        filename: "server/webrtc-proxy/udp-crypto.service.ts",
+        language: "typescript",
+        code: `import crypto from 'crypto';
+
+export class UDPPayloadCrypto {
+  static encryptPacket(buffer: Buffer, secretKey: Buffer): Buffer {
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv('aes-256-ctr', secretKey, iv);
+    const encrypted = Buffer.concat([cipher.update(buffer), cipher.final()]);
+    // Prepend 16-byte IV to encrypted UDP packet payload
+    return Buffer.concat([iv, encrypted]);
+  }
+}`
       },
-      githubUrl: "https://github.com/Moxirbek-Solijonov",
-      liveUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236/portfolio",
+      liveUrl: "https://github.com/Moxirbek236/portfolio"
     },
     {
       id: "mk-academy",
       title: "MK Academy",
-      subtitle: "Gamified CEFR English Learning Platform (Web, PWA, Mobile)",
+      subtitle: "Gamified CEFR English Learning Engine (PWA & Mobile)",
       period: "2025.08 – 2025.11",
       role: "Frontend Engineer & PWA Architect",
-      description: "Multi-role cross-platform CEFR English learning ecosystem featuring spaced repetition vocabulary algorithms, achievement gamification, and offline-first service worker architecture.",
-      problem: "Language learners suffer from high drop-off rates due to boring static content and lose progress when studying in low-connectivity mobile environments.",
-      solution: "Engineered a gamified PWA with spaced repetition memory cards, offline-first Axios interceptors, service worker caching, and XP/level achievement mechanics.",
-      tags: ["Next.js", "React", "TypeScript", "NestJS", "Prisma", "Tailwind CSS", "PWA", "Service Workers", "Capacitor"],
+      description: "Multi-role English learning platform featuring spaced repetition vocabulary algorithms, offline-first service worker caching, and gamified progress streaks.",
+      problem: "Language learners experience high drop-off rates due to repetitive study formats and progress loss during offline mobile usage.",
+      solution: "Engineered a PWA utilizing Leitner spaced-repetition intervals, Service Worker background synchronization, and XP achievement mechanics.",
+      tags: ["Next.js", "React", "NestJS", "Prisma", "Tailwind CSS", "Service Workers", "Capacitor"],
       metrics: [
-        "Offline-first PWA caching with Axios service worker interceptors",
-        "Spaced-repetition memory engine for vocabulary retention",
-        "Gamified XP, streaks, levels, and badge achievement system",
-        "Multi-role web, PWA, Android & iOS deployments"
+        "Leitner spaced repetition memory algorithm optimizing card retention",
+        "Offline-first PWA caching via Axios service worker interceptors",
+        "XP progression, daily login streak counters, and achievement badges",
+        "Multi-role web, PWA, Android, and iOS builds"
       ],
       features: [
-        "Spaced repetition algorithm designed to optimize vocabulary retention and learning intervals",
-        "Gamified XP progression system, daily login streaks, levels, and unlockable badges",
-        "Offline-first architecture utilizing custom Axios caching and Service Worker background sync",
-        "Multi-role user capabilities for students, instructors, and curriculum administrators",
-        "Capacitor mobile build pipeline generating production native Android/iOS packages",
-        "Automated CI/CD deployment workflow leveraging GitHub Actions"
+        "Spaced repetition engine calculating optimal card review intervals",
+        "Axios service worker interceptors queuing offline mutation requests",
+        "Gamified XP, streaks, levels, and unlockable achievement badges",
+        "Capacitor mobile pipeline generating production native Android packages"
       ],
-      architectureDiagram: {
-        nodes: [
-          { label: "Student App (PWA / Mobile)", type: "client" },
-          { label: "Axios Offline Cache & Service Worker", type: "cache" },
-          { label: "NestJS Learning API", type: "api" },
-          { label: "Spaced Repetition Algorithm", type: "queue" },
-          { label: "PostgreSQL Database", type: "db" }
-        ],
-        flow: "Student PWA ──► Service Worker / Axios Cache ──► NestJS API ──► Spaced Repetition Engine"
+      codeSnippet: {
+        filename: "src/lib/spaced-repetition/leitner.engine.ts",
+        language: "typescript",
+        code: `export function calculateNextReview(boxLevel: number, isCorrect: boolean): { nextBox: number; daysInterval: number } {
+  if (!isCorrect) return { nextBox: 1, daysInterval: 1 };
+  const nextBox = Math.min(boxLevel + 1, 5);
+  const intervals = [1, 3, 7, 14, 30]; // Days between reviews
+  return { nextBox, daysInterval: intervals[nextBox - 1] };
+}`
       },
-      githubUrl: "https://github.com/Moxirbek-Solijonov",
-      liveUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236/portfolio",
+      liveUrl: "https://github.com/Moxirbek236/portfolio"
     },
     {
       id: "instagram-bot",
       title: "Instagram Media Delivery Bot",
-      subtitle: "High-Performance Anti-Blocking Telegram Automation System",
+      subtitle: "High-Throughput Telegram Scraper Automation Engine",
       period: "2025.06 – 2025.08",
       role: "Backend & Automation Engineer",
-      description: "High-throughput Telegram bot engineered for reliable media extraction and delivery using proxy pool rotation, concurrency-limited queue management, and CDN direct streaming.",
-      problem: "Frequent IP rate limits, scraper bans, and heavy memory overhead when downloading and serving high-definition video/audio content via Telegram.",
-      solution: "Constructed an anti-blocking architecture featuring a rotating proxy pool, session management, Redis concurrency queues with randomized delay jitters, and CDN streaming pipelines.",
-      tags: ["Node.js", "NestJS", "Telegraf", "Redis", "SQLite", "Proxy Pool", "Queue Systems", "Docker"],
+      description: "High-throughput Telegram bot engineered for reliable media extraction and delivery using proxy pool rotation, Redis concurrency queues, and CDN direct streaming.",
+      problem: "Frequent IP rate limits, scraper bans, and heavy disk I/O memory overhead when processing high-definition media downloads.",
+      solution: "Constructed an anti-blocking architecture featuring a rotating proxy pool, Redis concurrency queue with randomized jitter delays, and CDN direct stream piping.",
+      tags: ["Node.js", "Telegraf", "Redis", "SQLite", "Proxy Pool", "Node Streams"],
       metrics: [
-        "Anti-blocking session rotation across proxy pool",
-        "Redis concurrency-limited queue with randomized jitter delays",
-        "CDN-direct Node.js streaming pipeline (Zero disk bloat)",
-        "Automatic audio extraction fallback engine"
+        "Anti-blocking session cycle management across rotating proxy pool",
+        "Redis concurrency queue with randomized delay jitter to bypass rate limits",
+        "CDN-direct Node.js stream piping (Zero disk buffer overhead)",
+        "SQLite & Redis fast-path caching for sub-50ms media re-delivery"
       ],
       features: [
-        "Anti-blocking scraper architecture utilizing rotating proxy pools and active session rotation",
-        "Concurrency-limited Redis job queue with randomized delay jitters to bypass anti-bot heuristics",
-        "Node.js memory-efficient stream piping directly from source CDN to Telegram API without disk storage",
-        "SQLite and Redis multi-layer caching for instant re-delivery of previously fetched media",
-        "Automatic fallback mechanism extracting audio tracks when video downloads are restricted",
-        "Telegraf bot framework integration with administrative status monitors and error analytics"
+        "Proxy pool rotation preventing scraper IP address blocks",
+        "Redis concurrency queues handling burst requests with randomized delays",
+        "Direct memory stream piping from CDN source to Telegram API",
+        "Automatic audio extraction fallback when video downloads are restricted"
       ],
-      architectureDiagram: {
-        nodes: [
-          { label: "Telegram User Command", type: "client" },
-          { label: "Telegraf Bot Router", type: "api" },
-          { label: "Redis Concurrency Queue", type: "queue" },
-          { label: "Rotating Proxy Pool", type: "realtime" },
-          { label: "Node.js Stream Pipeline (CDN Direct)", type: "db" }
-        ],
-        flow: "Telegram Client ──► Telegraf Bot ──► Redis Queue ──► Proxy Pool ──► CDN Stream Pipeline"
+      codeSnippet: {
+        filename: "src/queue/proxy-jitter.queue.ts",
+        language: "typescript",
+        code: `export async function getRotatedProxyWithJitter(proxyPool: string[]): Promise<{ proxy: string; delayMs: number }> {
+  const proxy = proxyPool[Math.floor(Math.random() * proxyPool.length)];
+  // Add 100ms - 400ms randomized jitter delay to bypass bot rate limit heuristics
+  const delayMs = Math.floor(100 + Math.random() * 300);
+  await new Promise((resolve) => setTimeout(resolve, delayMs));
+  return { proxy, delayMs };
+}`
       },
-      githubUrl: "https://github.com/Moxirbek-Solijonov",
-      liveUrl: "#"
+      githubUrl: "https://github.com/Moxirbek236/portfolio",
+      liveUrl: "https://github.com/Moxirbek236/portfolio"
     }
   ] as Product[],
 
-  engineeringHighlights: [
+  deepDives: [
     {
-      id: "multi-tenant-rbac",
-      title: "Multi-Tenant RBAC & Tenant Isolation",
-      productRef: "Educoin",
-      tag: "Backend Architecture",
-      summary: "Engineered scalable multi-tenancy for educational institutions with isolated database access, role-based authorization, and OpenTelemetry query observability.",
-      details: [
-        "Implemented schema-level tenant isolation preventing cross-center data leakage.",
-        "Built dynamic RBAC authorization decorators in NestJS for granular permission control.",
-        "Integrated OpenTelemetry distributed tracing to diagnose and eliminate slow SQL queries.",
-        "Containerized whole stack with Docker Compose and automated deployments via GitLab CI/CD."
-      ],
-      tech: ["NestJS", "PostgreSQL", "Prisma", "Redis", "OpenTelemetry"]
+      id: "webrtc-udp-proxy-note",
+      title: "Building a Sub-100ms WebRTC UDP Media Proxy with AES-256 Encryption in Node.js",
+      subtitle: "How I engineered low-latency peer-to-peer voice transmission for Ross Messenger.",
+      date: "Feb 2026",
+      readTime: "5 min read",
+      tags: ["WebRTC", "Node.js", "UDP", "AES-256", "Telecom"],
+      summary: "Browser WebRTC implementations can suffer from relay delays when direct P2P connections are NAT-restricted. Here is how I constructed a Node.js UDP media proxy with on-the-fly AES-256 packet payload encryption.",
+      content: [
+        "1. The Challenge: STUN/TURN servers add unacceptable latency for voice calls in Central Asia due to remote relay locations.",
+        "2. The Solution: A lightweight Node.js UDP socket proxy that performs Diffie-Hellman key exchange during call setup.",
+        "3. Encryption Pipeline: Every incoming audio packet buffer is encrypted using AES-256-CTR with a 16-byte initialization vector prepended to the UDP datagram.",
+        "4. Outcome: Achieved stable sub-100ms voice packet transmission while preserving end-to-end privacy."
+      ]
     },
     {
-      id: "webrtc-udp-proxy",
-      title: "Custom WebRTC-to-UDP Encrypted Media Proxy",
-      productRef: "Ross Messenger",
-      tag: "Real-Time & Telecom",
-      summary: "Designed a lightweight Node.js media proxy server delivering sub-100ms peer-to-peer encrypted voice transmission.",
-      details: [
-        "Implemented Diffie-Hellman key exchange for zero-trust caller authentication.",
-        "Engineered on-the-fly AES-256-CTR payload encryption for low latency UDP packets.",
-        "Optimized client message rendering using react-window to maintain 60 FPS under 10,000+ items.",
-        "Packaged mobile version into native Android APK using Capacitor and Zustand state management."
-      ],
-      tech: ["WebRTC", "Node.js", "Socket.IO", "Crypto", "Capacitor"]
-    },
-    {
-      id: "proxy-pool-automation",
-      title: "Anti-Blocking Scraper & Proxy Rotation Pool",
-      productRef: "Instagram Media Delivery Bot",
-      tag: "Automation & Infrastructure",
-      summary: "Constructed a resilient media extraction automation service capable of processing continuous requests without IP rate-limit bans.",
-      details: [
-        "Configured dynamic proxy pool rotation and session cycle management.",
-        "Built Redis concurrency-limited queues with randomized jitter timings to avoid bot detection.",
-        "Implemented zero-file-write stream piping to transmit media direct from CDN to user.",
-        "Added SQLite fast-path cache to instantly return popular media requests in under 50ms."
-      ],
-      tech: ["Telegraf", "Redis", "SQLite", "Proxy Pool", "Node Streams"]
-    },
-    {
-      id: "pwa-spaced-repetition",
-      title: "Offline-First Spaced Repetition Gamification Engine",
-      productRef: "MK Academy",
-      tag: "Frontend & UX Engineering",
-      summary: "Created a cross-platform learning application that works seamlessly offline with automated background sync and gamified progress rewards.",
-      details: [
-        "Developed custom Leitner/SuperMemo spaced repetition algorithm for vocabulary cards.",
-        "Built Axios service worker interceptors to queue mutation requests during offline periods.",
-        "Designed XP progression system, daily streak tracking, and achievement badges.",
-        "Shipped unified codebase across Web, PWA, Android, and iOS targets."
-      ],
-      tech: ["Next.js", "TypeScript", "Service Workers", "Zustand", "Tailwind"]
+      id: "multi-tenant-nestjs-prisma-note",
+      title: "Implementing Schema-Level Multi-Tenancy & Dynamic RBAC in NestJS & Prisma",
+      subtitle: "Architectural patterns from building Educoin's educational CRM.",
+      date: "Apr 2026",
+      readTime: "4 min read",
+      tags: ["NestJS", "Prisma", "PostgreSQL", "Multi-Tenancy", "RBAC"],
+      summary: "Multi-tenant SaaS applications must prevent cross-tenant data leaks. Bypassing row-level security through tenant header middleware and Prisma client extensions.",
+      content: [
+        "1. Context isolation: Extracting `X-Tenant-ID` header at the NestJS HTTP middleware level.",
+        "2. Prisma middleware: Intercepting every SQL query to automatically scope `where: { tenantId }` conditions.",
+        "3. RBAC Guards: Decorating controllers with `@Roles(Role.ADMIN, Role.TEACHER)` for dynamic permission checks.",
+        "4. Observability: Adding OpenTelemetry spans to trace query duration across tenant boundaries."
+      ]
     }
-  ] as Highlight[],
+  ] as DeepDiveArticle[],
 
-  skillCategories: [
+  skillCapabilities: [
     {
-      title: "Backend & Systems Architecture",
-      description: "Scalable APIs, database modeling, authentication, and microservices.",
+      category: "Backend & Architecture",
       skills: [
-        { name: "TypeScript", level: "Advanced", badge: "Primary" },
-        { name: "Node.js", level: "Advanced" },
-        { name: "NestJS", level: "Advanced", badge: "Core Stack" },
-        { name: "Express.js", level: "Proficient" },
-        { name: "REST APIs & Swagger", level: "Advanced" },
-        { name: "OpenTelemetry", level: "Intermediate" }
+        { name: "TypeScript", depth: "Production" },
+        { name: "Node.js", depth: "Production" },
+        { name: "NestJS", depth: "Production" },
+        { name: "Express.js", depth: "Production" },
+        { name: "REST APIs & OpenAPI", depth: "Production" },
+        { name: "OpenTelemetry", depth: "Comfortable" }
       ]
     },
     {
-      title: "Real-Time & Communications",
-      description: "WebRTC audio/video pipelines, WebSockets, and automation bots.",
+      category: "Real-Time & Telecom",
       skills: [
-        { name: "WebRTC & UDP", level: "Intermediate", badge: "Telecom" },
-        { name: "Socket.IO", level: "Advanced" },
-        { name: "Telegram Bot API / Telegraf", level: "Advanced", badge: "Automation" },
-        { name: "AES-256 Crypto Systems", level: "Intermediate" }
+        { name: "WebRTC & UDP", depth: "Production" },
+        { name: "Socket.IO", depth: "Production" },
+        { name: "Telegraf / Telegram Bot API", depth: "Production" },
+        { name: "AES-256 Crypto", depth: "Comfortable" }
       ]
     },
     {
-      title: "Frontend Engineering",
-      description: "Modern, responsive, performant user interfaces and PWAs.",
+      category: "Frontend & Mobile",
       skills: [
-        { name: "React", level: "Advanced" },
-        { name: "Next.js App Router", level: "Advanced", badge: "Core Stack" },
-        { name: "Tailwind CSS", level: "Advanced" },
-        { name: "Zustand", level: "Advanced" },
-        { name: "Framer Motion", level: "Advanced" },
-        { name: "PWA & Service Workers", level: "Proficient" }
+        { name: "Next.js App Router", depth: "Production" },
+        { name: "React", depth: "Production" },
+        { name: "Tailwind CSS", depth: "Production" },
+        { name: "Zustand", depth: "Production" },
+        { name: "PWA & Service Workers", depth: "Production" },
+        { name: "Capacitor Mobile", depth: "Comfortable" }
       ]
     },
     {
-      title: "Databases, Caching & Infra",
-      description: "Relational/NoSQL databases, in-memory caching, containerization, CI/CD.",
+      category: "Databases & Infrastructure",
       skills: [
-        { name: "PostgreSQL", level: "Advanced", badge: "Primary DB" },
-        { name: "Prisma ORM", level: "Advanced" },
-        { name: "Redis & Queues", level: "Advanced", badge: "Caching & Queues" },
-        { name: "SQLite", level: "Proficient" },
-        { name: "Docker", level: "Proficient" },
-        { name: "GitHub Actions / GitLab CI/CD", level: "Proficient" }
+        { name: "PostgreSQL", depth: "Production" },
+        { name: "Prisma ORM", depth: "Production" },
+        { name: "Redis & Queue Systems", depth: "Production" },
+        { name: "SQLite", depth: "Production" },
+        { name: "Docker & Containerization", depth: "Production" },
+        { name: "GitHub Actions / GitLab CI/CD", depth: "Comfortable" }
       ]
     }
-  ] as SkillCategory[],
+  ],
 
   experience: [
     {
       company: "Najot Ta'lim",
       role: "Assistant Teacher (Bootcamp Foundation)",
-      period: "2026.02 – 2026.04",
+      period: "Feb 2026 – Apr 2026 (2 mos)",
       location: "Tashkent, Uzbekistan",
-      responsibilities: [
-        "Guided students in learning core programming fundamentals, data structures, and algorithms using C and Python.",
-        "Mentored learners through hands-on coding assignments, live debugging sessions, and software engineering best practices.",
-        "Collaborated with senior instructors to evaluate student progress and prepare them for specialized full-stack engineering tracks."
-      ],
-      highlights: [
-        "Mentored 50+ students through fundamental computer science concepts",
-        "Conducted code reviews and daily debugging workshops",
-        "Reinforced clean code, algorithmic thinking, and problem solving"
+      details: [
+        "Mentored 50+ students in computer science fundamentals, algorithms, data structures, C, and Python.",
+        "Conducted daily code review sessions, live debugging workshops, and software engineering practice tests.",
+        "Guided student projects through Git workflows, clean code principles, and problem-solving methodologies."
       ]
     }
-  ] as ExperienceItem[],
+  ],
 
   education: [
-    {
-      institution: "Najot Ta’lim",
-      course: "Full-Stack Development Course",
-      location: "Tashkent, Uzbekistan",
-      period: "Jun 2025"
-    },
-    {
-      institution: "Ravnat Ziyo",
-      course: "Backend Development",
-      location: "Tashkent, Uzbekistan",
-      period: "Jul 2024"
-    },
-    {
-      institution: "CoddyCamp",
-      course: "Backend Development",
-      location: "Tashkent, Uzbekistan",
-      period: "Oct 2024"
-    }
-  ] as EducationItem[],
-
-  targetRoles: {
-    headline: "What I'm Looking For",
-    summary: "I am looking for Full-Stack or Backend Engineering opportunities where I can take ownership of complex systems, design scalable architectures, and build reliable software products.",
-    opportunities: [
-      "Full-Stack Engineering (TypeScript / React / Next.js / NestJS)",
-      "Backend Systems & API Architecture (Node.js / NestJS / PostgreSQL / Redis)",
-      "Multi-Tenant SaaS & Educational Technology Platforms",
-      "Real-Time Applications & Telecom (WebRTC / WebSockets / Queues)",
-      "Developer Tools & Automation Systems"
-    ],
-    values: [
-      "End-to-End Product Ownership from Database Schema to Frontend Polish",
-      "Strong Type-Safety & Maintenance Best Practices",
-      "High Performance, Low Latency, & Observability Mindset"
-    ]
-  }
+    { course: "Full-Stack Development Course", school: "Najot Ta'lim", date: "Jun 2025" },
+    { course: "Backend Development", school: "Ravnat Ziyo", date: "Jul 2024" },
+    { course: "Backend Development", school: "CoddyCamp", date: "Oct 2024" }
+  ]
 };

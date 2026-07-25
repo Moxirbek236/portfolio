@@ -1,26 +1,56 @@
 "use client";
 
+import { useState } from "react";
 import { PORTFOLIO_DATA, Product } from "@/lib/data/portfolioData";
-import { ArrowUpRight, Layers, CheckCircle2, AlertTriangle, Lightbulb } from "lucide-react";
+import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow } from "lucide-react";
 import { GithubIcon } from "@/components/ui/SocialIcons";
+import {
+  EducoinArchitectureSVG,
+  RossArchitectureSVG,
+  MKAcademyArchitectureSVG,
+  InstaBotArchitectureSVG
+} from "@/components/ui/ArchitectureDiagrams";
+import CodeSnippetViewer from "@/components/ui/CodeSnippetViewer";
 import { motion } from "framer-motion";
 
 export default function ProductsBuilt() {
-  return (
-    <section id="products" className="py-24 border-t border-slate-800/60 bg-[#080c14] relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+  const [activeTabs, setActiveTabs] = useState<Record<string, "architecture" | "code">>({
+    educoin: "architecture",
+    "ross-messenger": "architecture",
+    "mk-academy": "architecture",
+    "instagram-bot": "architecture"
+  });
 
-        {/* Section Title */}
+  const getArchitectureSVG = (id: string) => {
+    switch (id) {
+      case "educoin":
+        return <EducoinArchitectureSVG />;
+      case "ross-messenger":
+        return <RossArchitectureSVG />;
+      case "mk-academy":
+        return <MKAcademyArchitectureSVG />;
+      case "instagram-bot":
+        return <InstaBotArchitectureSVG />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <section id="work" className="py-24 border-t border-slate-800/60 bg-[#080c14] relative">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+
+        {/* Section Header */}
         <div className="space-y-4 max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20">
             <Layers className="w-3.5 h-3.5" />
-            <span>PRODUCT SHOWCASE</span>
+            <span>FEATURED WORK</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Products I've Built
+            Production Products & Systems
           </h2>
-          <p className="text-base sm:text-lg text-slate-400">
-            End-to-end software applications engineered for scalability, real-time performance, and high reliability from database design to deployment.
+          <p className="text-base sm:text-lg text-slate-300">
+            Architectural breakdowns, topology flows, and real code snippets from software products I've engineered.
           </p>
         </div>
 
@@ -33,7 +63,7 @@ export default function ProductsBuilt() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="glass-card rounded-3xl border border-slate-800 p-6 sm:p-10 space-y-8 hover:border-slate-700 transition-all hover:shadow-2xl hover:shadow-indigo-950/30"
+              className="glass-card rounded-3xl border border-slate-800 p-6 sm:p-10 space-y-8 hover:border-slate-700 transition-all shadow-2xl"
             >
               {/* Product Header */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
@@ -46,8 +76,8 @@ export default function ProductsBuilt() {
                       {product.period}
                     </span>
                   </div>
-                  <p className="text-sm sm:text-base font-medium text-indigo-400 mt-1">
-                    {product.subtitle}
+                  <p className="text-sm font-medium text-indigo-400 mt-1">
+                    {product.subtitle} • {product.role}
                   </p>
                 </div>
 
@@ -60,77 +90,66 @@ export default function ProductsBuilt() {
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-all"
                     >
                       <GithubIcon className="w-3.5 h-3.5" />
-                      <span>Repository</span>
+                      <span>Deep Link Repo</span>
                     </a>
                   )}
-                  {product.liveUrl && product.liveUrl !== "#" && (
-                    <a
-                      href={product.liveUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/20"
+                </div>
+              </div>
+
+              {/* Narrative Summary */}
+              <div className="space-y-2 text-sm text-slate-300 leading-relaxed">
+                <p><strong className="text-white">Context:</strong> {product.problem}</p>
+                <p><strong className="text-white">Engineering Yechim:</strong> {product.solution}</p>
+              </div>
+
+              {/* Interactive Architecture SVG vs Code Snippet Switcher */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setActiveTabs({ ...activeTabs, [product.id]: "architecture" })}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
+                        activeTabs[product.id] === "architecture"
+                          ? "bg-indigo-600 text-white font-semibold"
+                          : "text-slate-400 hover:text-white hover:bg-slate-900"
+                      }`}
                     >
-                      <span>Live App</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
-                  )}
-                </div>
-              </div>
+                      <Workflow className="w-3.5 h-3.5" />
+                      <span>SVG Topology Diagram</span>
+                    </button>
 
-              {/* Problem vs Solution Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-5 rounded-2xl bg-slate-950/80 border border-rose-950/40 space-y-2">
-                  <div className="flex items-center gap-2 text-rose-400 font-bold text-xs uppercase tracking-wider">
-                    <AlertTriangle className="w-4 h-4" />
-                    <span>The Problem</span>
+                    <button
+                      onClick={() => setActiveTabs({ ...activeTabs, [product.id]: "code" })}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
+                        activeTabs[product.id] === "code"
+                          ? "bg-indigo-600 text-white font-semibold"
+                          : "text-slate-400 hover:text-white hover:bg-slate-900"
+                      }`}
+                    >
+                      <Code className="w-3.5 h-3.5" />
+                      <span>Code Snippet ({product.codeSnippet.language})</span>
+                    </button>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    {product.problem}
-                  </p>
-                </div>
 
-                <div className="p-5 rounded-2xl bg-slate-950/80 border border-emerald-950/40 space-y-2">
-                  <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                    <Lightbulb className="w-4 h-4" />
-                    <span>The Engineering Solution</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    {product.solution}
-                  </p>
-                </div>
-              </div>
-
-              {/* Visual System Architecture Diagram Widget */}
-              <div className="p-5 rounded-2xl bg-[#060911] border border-indigo-950/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-indigo-400 font-semibold tracking-wider uppercase">
-                    Architecture Flow Diagram
+                  <span className="hidden sm:inline text-[10px] font-mono text-slate-500">
+                    {activeTabs[product.id] === "architecture" ? "Interactive SVG Topology" : product.codeSnippet.filename}
                   </span>
-                  <span className="text-[10px] font-mono text-slate-500">System Topology</span>
                 </div>
-                
-                {/* Node Topologies */}
-                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800/80 font-mono text-xs text-slate-300 overflow-x-auto">
-                  <div className="flex flex-wrap items-center gap-2 text-center text-[11px]">
-                    {product.architectureDiagram.nodes.map((node, nIdx) => (
-                      <div key={nIdx} className="flex items-center gap-2">
-                        <span className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 shadow">
-                          {node.label}
-                        </span>
-                        {nIdx < product.architectureDiagram.nodes.length - 1 && (
-                          <span className="text-indigo-500 font-bold">──►</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3 pt-3 border-t border-slate-900 text-[10px] text-slate-500 font-mono">
-                    Flow: {product.architectureDiagram.flow}
-                  </div>
-                </div>
+
+                {/* Tab View */}
+                {activeTabs[product.id] === "architecture" ? (
+                  getArchitectureSVG(product.id)
+                ) : (
+                  <CodeSnippetViewer
+                    filename={product.codeSnippet.filename}
+                    language={product.codeSnippet.language}
+                    code={product.codeSnippet.code}
+                  />
+                )}
               </div>
 
-              {/* Key Features & Metrics */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Verified Metrics & Features */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                 <div className="space-y-3">
                   <h4 className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold">
                     Core Technical Features
@@ -147,7 +166,7 @@ export default function ProductsBuilt() {
 
                 <div className="space-y-3">
                   <h4 className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold">
-                    System Metrics & Proof Points
+                    Verified Outcomes & Specifications
                   </h4>
                   <div className="space-y-2">
                     {product.metrics.map((metric, mIdx) => (
@@ -163,13 +182,13 @@ export default function ProductsBuilt() {
                 </div>
               </div>
 
-              {/* Tech Stack Badges Strip */}
+              {/* Tech Badges Strip */}
               <div className="pt-4 border-t border-slate-800/60 flex flex-wrap items-center gap-2">
                 <span className="text-xs font-mono text-slate-500 mr-2">Stack:</span>
                 {product.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2.5 py-1 rounded-md text-xs font-mono text-indigo-300 bg-indigo-950/40 border border-indigo-900/60"
+                    className="px-2.5 py-1 rounded text-xs font-mono text-indigo-300 bg-indigo-950/40 border border-indigo-900/60"
                   >
                     {tag}
                   </span>
