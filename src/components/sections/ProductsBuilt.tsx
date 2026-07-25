@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { PORTFOLIO_DATA } from "@/lib/data/portfolioData";
-import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow, Image as ImageIcon } from "lucide-react";
+import { ArrowUpRight, Layers, CheckCircle2, Code, Workflow, Image as ImageIcon, Lock, ShieldCheck } from "lucide-react";
 import { GithubIcon } from "@/components/ui/SocialIcons";
 import {
   EducoinArchitectureSVG,
@@ -43,15 +43,15 @@ export default function ProductsBuilt() {
 
         {/* Section Header */}
         <div className="space-y-4 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20">
             <Layers className="w-3.5 h-3.5" />
-            <span>FEATURED WORK & SYSTEMS</span>
+            <span>01 · FEATURED WORK & SYSTEMS</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Production Products & Architecture
+            Production Products & Systems
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
-            Visual UI previews, topology flow diagrams, and real code snippets from software products I've engineered.
+            Visual UI previews, dynamic topology flow diagrams, real code snippets, and architectural retrospectives from software products I&apos;ve engineered.
           </p>
         </div>
 
@@ -73,69 +73,94 @@ export default function ProductsBuilt() {
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                       {product.title}
                     </h3>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-mono text-indigo-300 bg-indigo-950/60 border border-indigo-800">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-mono text-amber-300 bg-amber-950/60 border border-amber-800">
                       {product.period}
                     </span>
                   </div>
-                  <p className="text-sm font-medium text-indigo-400 mt-1">
-                    {product.subtitle} • {product.role}
+                  <p className="text-sm font-medium text-amber-400 mt-1">
+                    {product.subtitle} • <span className="text-slate-300">{product.role}</span>
                   </p>
                 </div>
 
-                {/* Verified GitHub Link */}
+                {/* Verified GitHub / NDA Link */}
                 <div className="relative flex items-center gap-3">
-                  <a
-                    href="https://github.com/Moxirbek236"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all shadow-sm"
-                  >
-                    <GithubIcon className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>GitHub Profile / Repos</span>
-                    <ArrowUpRight className="w-3 h-3 text-slate-400" />
-                  </a>
+                  {product.isPrivate ? (
+                    <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono text-amber-300 bg-amber-950/40 border border-amber-800/60">
+                      <Lock className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Enterprise Codebase (NDA)</span>
+                    </span>
+                  ) : (
+                    <a
+                      href={product.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:border-amber-500/50 hover:text-white transition-all shadow-sm"
+                    >
+                      <GithubIcon className="w-3.5 h-3.5 text-amber-400" />
+                      <span>View Code Repository</span>
+                      <ArrowUpRight className="w-3 h-3 text-slate-400" />
+                    </a>
+                  )}
                 </div>
               </div>
 
-              {/* Narrative Context */}
-              <div className="space-y-2 text-sm text-slate-300 leading-relaxed">
-                <p><strong className="text-white">Problem:</strong> {product.problem}</p>
-                <p><strong className="text-white">Engineering Solution:</strong> {product.solution}</p>
+              {/* Problem & Engineering Solution */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
+                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1">
+                  <span className="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider">The Problem</span>
+                  <p className="leading-relaxed">{product.problem}</p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1">
+                  <span className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider">Engineering Solution</span>
+                  <p className="leading-relaxed">{product.solution}</p>
+                </div>
               </div>
+
+              {/* Architectural Retrospective */}
+              {product.retrospective && (
+                <div className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-800/40 flex items-start gap-3 text-xs text-amber-200 font-mono">
+                  <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-amber-400">Architectural Trade-Off / Retrospective: </span>
+                    <span>{product.retrospective}</span>
+                  </div>
+                </div>
+              )}
 
               {/* View Switcher: UI Preview / SVG Topology / Code Snippet */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-2 overflow-x-auto">
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setActiveTabs({ ...activeTabs, [product.id]: "preview" })}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
                         activeTabs[product.id] === "preview"
-                          ? "bg-indigo-600 text-white font-semibold"
+                          ? "bg-amber-500 text-slate-950 font-bold"
                           : "text-slate-400 hover:text-white hover:bg-slate-900"
                       }`}
                     >
                       <ImageIcon className="w-3.5 h-3.5" />
-                      <span>UI Screenshot Preview</span>
+                      <span>UI Preview</span>
                     </button>
 
                     <button
                       onClick={() => setActiveTabs({ ...activeTabs, [product.id]: "architecture" })}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
                         activeTabs[product.id] === "architecture"
-                          ? "bg-indigo-600 text-white font-semibold"
+                          ? "bg-amber-500 text-slate-950 font-bold"
                           : "text-slate-400 hover:text-white hover:bg-slate-900"
                       }`}
                     >
                       <Workflow className="w-3.5 h-3.5" />
-                      <span>SVG Topology Diagram</span>
+                      <span>Topology Diagram</span>
                     </button>
 
                     <button
                       onClick={() => setActiveTabs({ ...activeTabs, [product.id]: "code" })}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
                         activeTabs[product.id] === "code"
-                          ? "bg-indigo-600 text-white font-semibold"
+                          ? "bg-amber-500 text-slate-950 font-bold"
                           : "text-slate-400 hover:text-white hover:bg-slate-900"
                       }`}
                     >
@@ -146,9 +171,9 @@ export default function ProductsBuilt() {
 
                   <span className="hidden sm:inline text-[10px] font-mono text-slate-500">
                     {activeTabs[product.id] === "preview"
-                      ? "Product Visual Screenshot"
+                      ? "Product UI Screenshot"
                       : activeTabs[product.id] === "architecture"
-                      ? "Interactive Topology SVG"
+                      ? "System Node Topology"
                       : product.codeSnippet.filename}
                   </span>
                 </div>
@@ -181,12 +206,12 @@ export default function ProductsBuilt() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                 <div className="space-y-3">
                   <h4 className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold">
-                    Core Technical Features
+                    Core Technical Scope
                   </h4>
                   <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
                     {product.features.map((feat, fIdx) => (
                       <li key={fIdx} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -217,7 +242,7 @@ export default function ProductsBuilt() {
                 {product.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2.5 py-1 rounded text-xs font-mono text-indigo-300 bg-indigo-950/40 border border-indigo-900/60"
+                    className="px-2.5 py-1 rounded text-xs font-mono text-amber-300 bg-amber-950/40 border border-amber-900/60"
                   >
                     {tag}
                   </span>

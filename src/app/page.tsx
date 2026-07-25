@@ -1,18 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import ProductsBuilt from "@/components/sections/ProductsBuilt";
 import DeepDives from "@/components/sections/DeepDives";
-import DeveloperRoom3D from "@/components/sections/DeveloperRoom3D";
 import AboutStory from "@/components/sections/AboutStory";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
-import CommandPalette from "@/components/layout/CommandPalette";
-import TerminalModal from "@/components/layout/TerminalModal";
 import { Language } from "@/lib/data/i18nData";
+
+// Dynamically load heavy client modules (Three.js WebGL & Modals) to optimize initial FCP / LCP
+const DeveloperRoom3D = dynamic(() => import("@/components/sections/DeveloperRoom3D"), {
+  ssr: false,
+  loading: () => (
+    <section className="py-24 border-t border-slate-800/60 bg-[#060911] relative">
+      <div className="max-w-6xl mx-auto px-4 text-center space-y-4">
+        <div className="h-8 w-48 bg-slate-800/60 rounded-full mx-auto animate-pulse" />
+        <div className="h-64 w-full bg-slate-900/60 rounded-3xl border border-slate-800 animate-pulse flex items-center justify-center text-slate-500 font-mono text-xs">
+          Loading 3D WebGL Workspace...
+        </div>
+      </div>
+    </section>
+  ),
+});
+
+const CommandPalette = dynamic(() => import("@/components/layout/CommandPalette"), { ssr: false });
+const TerminalModal = dynamic(() => import("@/components/layout/TerminalModal"), { ssr: false });
 
 export default function Home() {
   const [lang, setLang] = useState<Language>("EN");

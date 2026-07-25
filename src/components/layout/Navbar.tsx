@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { PORTFOLIO_DATA } from "@/lib/data/portfolioData";
 import { Language, I18N_DATA } from "@/lib/data/i18nData";
-import { Terminal, Download, Menu, X, Command, Sun, Moon, Laptop } from "lucide-react";
+import { Terminal, Download, Menu, X, Sun, Moon, Sparkles } from "lucide-react";
 
 interface NavbarProps {
   lang: Language;
@@ -36,11 +36,11 @@ export default function Navbar({
   const tNav = I18N_DATA[lang].nav;
 
   const navLinks = [
-    { name: tNav.work, href: "#work" },
-    { name: tNav.deepDives, href: "#deep-dives" },
-    { name: tNav.room, href: "#my-room" },
-    { name: tNav.about, href: "#about" },
-    { name: tNav.contact, href: "#contact" },
+    { name: tNav.work, href: "#work", badge: null },
+    { name: tNav.deepDives, href: "#deep-dives", badge: null },
+    { name: tNav.room, href: "#my-room", badge: "3D LAB" },
+    { name: tNav.about, href: "#about", badge: null },
+    { name: tNav.contact, href: "#contact", badge: null },
   ];
 
   const languages: Language[] = ["EN", "UZ", "RU"];
@@ -55,7 +55,7 @@ export default function Navbar({
         
         {/* Brand Name */}
         <a href="#" className="flex items-center gap-2 shrink-0 group">
-          <span className="font-bold text-base sm:text-lg text-white dark:text-white light:text-slate-900 tracking-tight group-hover:text-amber-400 transition-colors">
+          <span className="font-bold text-base sm:text-lg text-white tracking-tight group-hover:text-amber-400 transition-colors">
             {PORTFOLIO_DATA.personal.name}
           </span>
           <span className="hidden xl:inline text-xs font-mono text-slate-400 border-l border-slate-800 pl-2.5">
@@ -64,14 +64,21 @@ export default function Navbar({
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-6 text-sm text-slate-300 dark:text-slate-300 font-medium">
+        <nav className="hidden lg:flex items-center gap-6 text-sm text-slate-300 font-medium">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="hover:text-white hover:underline underline-offset-8 decoration-amber-500 transition-all"
+              className="relative group inline-flex items-center gap-1.5 hover:text-white transition-all py-1"
             >
-              {link.name}
+              <span>{link.name}</span>
+              {link.badge && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold text-cyan-300 bg-cyan-950/80 border border-cyan-500/30 animate-pulse shadow-sm">
+                  <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+                  {link.badge}
+                </span>
+              )}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-400 group-hover:w-full transition-all duration-200" />
             </a>
           ))}
         </nav>
@@ -123,9 +130,9 @@ export default function Navbar({
 
           {/* PDF CV Download Button */}
           <a
-            href="/Moxirbek-Solijonov-CV.pdf"
+            href={PORTFOLIO_DATA.personal.resumeUrl}
             download="Moxirbek-Solijonov-CV.pdf"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-600 hover:bg-amber-500 transition-all shadow-md active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-md active:scale-95"
           >
             <Download className="w-3.5 h-3.5" />
             <span>CV</span>
@@ -150,9 +157,14 @@ export default function Navbar({
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-md hover:bg-slate-900 hover:text-white transition-colors"
+                className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-900 hover:text-white transition-colors"
               >
-                {link.name}
+                <span>{link.name}</span>
+                {link.badge && (
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-mono text-cyan-400 bg-cyan-950 border border-cyan-800">
+                    {link.badge}
+                  </span>
+                )}
               </a>
             ))}
           </nav>

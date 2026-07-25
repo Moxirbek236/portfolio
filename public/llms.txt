@@ -1,0 +1,15 @@
+# Moxirbek Solijonov — Full-Stack & Systems Engineer
+
+> Full-Stack Engineer based in Tashkent, Uzbekistan specializing in TypeScript, NestJS, Next.js App Router, WebRTC VoIP proxies, and multi-tenant SaaS backends.
+
+## Key Projects
+- Educoin: Multi-Tenant Educational CRM & LMS (NestJS, Prisma, PostgreSQL, Redis)
+- Ross Messenger: Telegram-Inspired WebRTC Voice & Messaging Engine (Next.js, Node.js, WebRTC, UDP Proxy)
+- MK Academy: Gamified CEFR English Learning Engine PWA (Next.js, Service Workers, Capacitor)
+- Instagram Media Delivery Bot: High-Throughput Scraper Automation Engine (Telegraf, Redis, Stream Pipe)
+
+## Contact & Links
+- GitHub: https://github.com/Moxirbek236
+- LinkedIn: https://linkedin.com/in/moxirbek-solijonov
+- Telegram: https://t.me/Rakhimberdiyev_1970
+- Email: moxirbekmoxirbek29@gmail.com
