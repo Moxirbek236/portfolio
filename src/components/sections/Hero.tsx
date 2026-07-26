@@ -28,9 +28,13 @@ export default function Hero({ lang, onOpenCommandPalette }: HeroProps) {
 
         {/* Headline */}
         <div className="space-y-4">
+          {/* SEO: Full name as primary heading for Google to index */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] max-w-4xl mx-auto">
-            {t.heroHeadline}
+            Moxirbek Solijonov
           </h1>
+          <h2 className="text-xl sm:text-2xl font-mono text-amber-400 font-semibold tracking-wide max-w-3xl mx-auto">
+            {t.heroHeadline}
+          </h2>
           <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-300 leading-relaxed">
             {t.heroSub}
           </p>

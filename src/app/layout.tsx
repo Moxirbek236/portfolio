@@ -103,14 +103,19 @@ export default function RootLayout({
 }>) {
   const personSchema = {
     "@context": "https://schema.org",
-    "@type": "Person",
+    "@type": ["Person", "ProfilePage"],
     "@id": `${SITE_URL}/#person`,
     name: FULL_NAME,
-    alternateName: ["Moxirbek", "Moxirbek S."],
+    alternateName: ["Moxirbek", "Moxirbek S.", "Moxirbek Solijonov Engineer", "Moxirbek Solijonov Developer"],
     jobTitle: "Full-Stack & Systems Engineer",
     description: DESCRIPTION,
     url: SITE_URL,
-    image: `${SITE_URL}/aang-avatar.jpg`,
+    image: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/aang-avatar.jpg`,
+      width: 160,
+      height: 160,
+    },
     email: "moxirbekmoxirbek29@gmail.com",
     telephone: "+998991459686",
     address: {
@@ -118,6 +123,7 @@ export default function RootLayout({
       addressLocality: "Tashkent",
       addressCountry: "UZ",
       addressRegion: "Tashkent",
+      postalCode: "100000",
     },
     nationality: {
       "@type": "Country",
@@ -125,10 +131,16 @@ export default function RootLayout({
     },
     sameAs: [
       "https://github.com/Moxirbek236",
-      "https://linkedin.com/in/moxirbek-solijonov",
+      "https://www.linkedin.com/in/moxirbek-solijonov",
       "https://t.me/Rakhimberdiyev_1970",
       SITE_URL,
     ],
+    hasOccupation: {
+      "@type": "Occupation",
+      name: "Full-Stack & Systems Engineer",
+      occupationLocation: { "@type": "Country", name: "Uzbekistan" },
+      skills: "TypeScript, Node.js, NestJS, Next.js, WebRTC, PostgreSQL, Redis, Docker",
+    },
     knowsAbout: [
       "TypeScript",
       "Node.js",
@@ -144,18 +156,33 @@ export default function RootLayout({
       "Socket.IO",
       "Real-time Systems",
       "Backend Architecture",
+      "AES-256 Encryption",
+      "UDP Proxies",
+      "Telegram Bot API",
     ],
     alumniOf: [
       {
         "@type": "EducationalOrganization",
         name: "Najot Ta'lim",
-        address: { "@type": "PostalAddress", addressLocality: "Tashkent" },
+        address: { "@type": "PostalAddress", addressLocality: "Tashkent", addressCountry: "UZ" },
       },
     ],
     worksFor: {
       "@type": "Organization",
-      name: "Available for Remote Roles",
+      name: "Open to Remote Engineering Roles",
     },
+  };
+
+  const profilePageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    dateCreated: "2025-01-01",
+    dateModified: new Date().toISOString(),
+    url: SITE_URL,
+    name: `${FULL_NAME} — Portfolio`,
+    description: DESCRIPTION,
+    author: { "@id": `${SITE_URL}/#person` },
+    mainEntity: { "@id": `${SITE_URL}/#person` },
   };
 
   const websiteSchema = {
@@ -185,6 +212,14 @@ export default function RootLayout({
     >
       <head>
         <link rel="canonical" href={SITE_URL} />
+        <link rel="me" href="https://github.com/Moxirbek236" />
+        <link rel="me" href="https://www.linkedin.com/in/moxirbek-solijonov" />
+        <meta name="author" content="Moxirbek Solijonov" />
+        <meta name="copyright" content="Moxirbek Solijonov" />
+        <meta name="subject" content="Moxirbek Solijonov — Full-Stack & Systems Engineer Portfolio" />
+        <meta name="rating" content="general" />
+        <meta name="revisit-after" content="3 days" />
+        <meta property="article:author" content="Moxirbek Solijonov" />
       </head>
       <body
         suppressHydrationWarning
@@ -201,6 +236,12 @@ export default function RootLayout({
           type="application/ld+json"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <Script
+          id="json-ld-profile"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
         />
         {children}
       </body>

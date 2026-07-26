@@ -18,7 +18,7 @@ export default function AboutStory() {
               <span>03 · ABOUT & ENGINEERING PHILOSOPHY</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-              About & Software Engineering Mindset
+              About Moxirbek Solijonov
             </h2>
             <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
               {PORTFOLIO_DATA.personal.storyBio}

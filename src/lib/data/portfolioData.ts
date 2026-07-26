@@ -72,7 +72,7 @@ export const PORTFOLIO_DATA = {
     resumeUrl: "/Moxirbek-Solijonov-CV.pdf",
     avatarUrl: "/aang-avatar.jpg",
     headline: "I build resilient multi-tenant SaaS backends, WebRTC VoIP proxies, and high-throughput real-time automation engines.",
-    storyBio: "I am a Full-Stack Engineer based in Tashkent, Uzbekistan with a deep focus on backend reliability, real-time protocols, and database schema design. As an Assistant Teacher & Mentor at Najot Ta'lim, I instructed 50+ students across 2 intensive CS foundation cohorts in algorithms, C, Python, and software design patterns. My work bridges complex backend systems with crisp, responsive frontend applications.",
+    storyBio: "Hi, I'm Moxirbek Solijonov, a Full-Stack & Systems Engineer based in Tashkent, Uzbekistan with a deep focus on backend reliability, real-time protocols, and database schema design. As an Assistant Teacher & Mentor at Najot Ta'lim, I instructed 50+ students across 2 intensive CS foundation cohorts in algorithms, C, Python, and software design patterns. My work bridges complex backend systems with crisp, responsive frontend applications.",
   },
 
   products: [
