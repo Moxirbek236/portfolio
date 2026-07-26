@@ -23,12 +23,12 @@ export default function Hero({ lang, onOpenCommandPalette }: HeroProps) {
         {/* Live Status Bar */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-xs font-mono bg-slate-900/90 border border-slate-800 shadow-xl">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
-          <span className="text-slate-300">{t.nowStatus}</span>
+          <span className="text-slate-300 font-medium">Currently: Engineering SaaS & WebRTC. Open to Senior Backend Roles.</span>
         </div>
 
         {/* Headline */}
         <div className="space-y-4">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] max-w-4xl mx-auto">
             {t.heroHeadline}
           </h1>
           <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-300 leading-relaxed">

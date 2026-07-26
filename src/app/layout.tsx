@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Outfit, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const outfit = Outfit({
+  variable: "--font-inter", // keeping the variable name so tailwind doesn't break
   subsets: ["latin"],
   display: "swap",
 });
@@ -181,7 +181,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${jetbrainsMono.variable} dark scroll-smooth`}
+      className={`${outfit.variable} ${jetbrainsMono.variable} dark scroll-smooth`}
     >
       <head>
         <link rel="canonical" href={SITE_URL} />

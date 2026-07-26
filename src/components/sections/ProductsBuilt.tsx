@@ -228,8 +228,10 @@ export default function ProductsBuilt() {
                         key={mIdx}
                         className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-3 text-xs text-slate-200"
                       >
-                        <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></div>
-                        <span>{metric}</span>
+                        <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></div>
+                        <span>
+                          {metric.label}: <span className="font-bold text-emerald-400 font-mono">{metric.value}</span>
+                        </span>
                       </div>
                     ))}
                   </div>
