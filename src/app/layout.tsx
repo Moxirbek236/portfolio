@@ -103,7 +103,7 @@ export default function RootLayout({
 }>) {
   const personSchema = {
     "@context": "https://schema.org",
-    "@type": ["Person", "ProfilePage"],
+    "@type": "Person",
     "@id": `${SITE_URL}/#person`,
     name: FULL_NAME,
     alternateName: ["Moxirbek", "Moxirbek S.", "Moxirbek Solijonov Engineer", "Moxirbek Solijonov Developer"],
@@ -176,7 +176,7 @@ export default function RootLayout({
   const profilePageSchema = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    dateCreated: "2025-01-01",
+    dateCreated: "2025-01-01T00:00:00Z",
     dateModified: new Date().toISOString(),
     url: SITE_URL,
     name: `${FULL_NAME} — Portfolio`,
