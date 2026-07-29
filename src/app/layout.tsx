@@ -214,6 +214,7 @@ export default function RootLayout({
         <link rel="canonical" href={SITE_URL} />
         <link rel="me" href="https://github.com/Moxirbek236" />
         <link rel="me" href="https://www.linkedin.com/in/moxirbek-solijonov" />
+        <meta name="google-site-verification" content="eHQwPfoZsN3RGOlaB8dudZzX4qFArWix5C-H25KIjI" />
         <meta name="author" content="Moxirbek Solijonov" />
         <meta name="copyright" content="Moxirbek Solijonov" />
         <meta name="subject" content="Moxirbek Solijonov — Full-Stack & Systems Engineer Portfolio" />
